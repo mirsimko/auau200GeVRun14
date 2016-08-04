@@ -152,6 +152,7 @@ class StPicoCutsBase : public TNamed
   void setCutPtotRangeHybridTOF(float min, float max, int pidFlag);
 
   void setCutPionPtRange(float min, float max);
+  void setCutPionEtaRange(float max);
   void setCutPionDcaMin(float min);
   void setCutPionDcaMinTertiary(float min);
   void setCutTPCNSigmaPion(float f);
@@ -161,6 +162,7 @@ class StPicoCutsBase : public TNamed
   void setCutPionPtotRangeHybridTOF(float min, float max);
 
   void setCutKaonPtRange(float min, float max);
+  void setCutKaonEtaRange(float max);
   void setCutKaonDcaMin(float min);
   void setCutKaonDcaMinTertiary(float min);
   void setCutTPCNSigmaKaon(float f);
@@ -170,6 +172,7 @@ class StPicoCutsBase : public TNamed
   void setCutKaonPtotRangeHybridTOF(float min, float max);
 
   void setCutProtonPtRange(float min, float max);
+  void setCutProtonEtaRange(float max);
   void setCutProtonDcaMin(float min);
   void setCutProtonDcaMinTertiary(float min);
   void setCutTPCNSigmaProton(float f);
@@ -265,6 +268,7 @@ inline void StPicoCutsBase::setCutPrimaryDCAtoVtxMax(float f) { mPrimaryDCAtoVtx
 
 inline void StPicoCutsBase::setCutPtRange(float min, float max, int pidFlag)            { mPtRange[pidFlag][0] = min; 
                                                                                           mPtRange[pidFlag][1] = max; }
+inline void StPicoCutsBase::setCutPtRange(float max, int pidFlag)		        { mEtaRange[pidFlag] = max; }
 
 inline void StPicoCutsBase::setCutDcaMin(float min, int pidFlag)                        { mDcaMin[pidFlag] = min; } 
 inline void StPicoCutsBase::setCutDcaMinTertiary(float min, int pidFlag)                { mDcaMinTertiary[pidFlag] = min; } 
@@ -278,6 +282,7 @@ inline void StPicoCutsBase::setCutPtotRangeHybridTOF(float min, float max, int p
                                                                                           mPtotRangeHybridTOF[pidFlag][1] = max; }
 
 inline void StPicoCutsBase::setCutPionPtRange(float min, float max)              { setCutPtRange(min, max, StPicoCutsBase::kPion); }
+inline void StPicoCutsBase::setCutPionEtaRange(float max)		         { setCutEtaRange(max, StPicoCutsBase::kPion); }
 inline void StPicoCutsBase::setCutPionDcaMin(float min)                          { setCutDcaMin(min, StPicoCutsBase::kPion); }
 inline void StPicoCutsBase::setCutPionDcaMinTertiary(float min)                  { setCutDcaMinTertiary(min, StPicoCutsBase::kPion); }
 inline void StPicoCutsBase::setCutTPCNSigmaPion(float f)                         { setCutTPCNSigma(f, StPicoCutsBase::kPion); }
@@ -287,6 +292,7 @@ inline void StPicoCutsBase::setCutPionPtotRangeTOF(float min, float max)        
 inline void StPicoCutsBase::setCutPionPtotRangeHybridTOF(float min, float max)   { setCutPtotRangeHybridTOF(min, max, StPicoCutsBase::kPion); }
 
 inline void StPicoCutsBase::setCutKaonPtRange(float min, float max)              { setCutPtRange(min, max, StPicoCutsBase::kKaon); }
+inline void StPicoCutsBase::setCutKaonEtaRange(float max)		         { setCutEtaRange(max, StPicoCutsBase::kKaon); }
 inline void StPicoCutsBase::setCutKaonDcaMin(float min)                          { setCutDcaMin(min, StPicoCutsBase::kKaon); }
 inline void StPicoCutsBase::setCutKaonDcaMinTertiary(float min)                  { setCutDcaMinTertiary(min, StPicoCutsBase::kKaon); }
 inline void StPicoCutsBase::setCutTPCNSigmaKaon(float f)                         { setCutTPCNSigma(f, StPicoCutsBase::kKaon); }
@@ -296,6 +302,7 @@ inline void StPicoCutsBase::setCutKaonPtotRangeTOF(float min, float max)        
 inline void StPicoCutsBase::setCutKaonPtotRangeHybridTOF(float min, float max)   { setCutPtotRangeHybridTOF(min, max, StPicoCutsBase::kKaon); }
 
 inline void StPicoCutsBase::setCutProtonPtRange(float min, float max)            { setCutPtRange(min, max, StPicoCutsBase::kProton); }
+inline void StPicoCutsBase::setCutProtonEtaRange(float max)			 { setCutEtaRange(max, StPicoCutsBase::kProton); }
 inline void StPicoCutsBase::setCutProtonDcaMin(float min)                        { setCutDcaMin(min, StPicoCutsBase::kProton); }
 inline void StPicoCutsBase::setCutProtonDcaMinTertiary(float min)                { setCutDcaMinTertiary(min, StPicoCutsBase::kProton); }
 inline void StPicoCutsBase::setCutTPCNSigmaProton(float f)                       { setCutTPCNSigma(f, StPicoCutsBase::kProton); }
