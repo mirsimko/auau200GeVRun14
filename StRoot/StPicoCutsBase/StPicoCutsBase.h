@@ -208,6 +208,7 @@ class StPicoCutsBase : public TNamed
   StV0TofCorrection* mTOFCorr;  // TOF correction
 
   StThreeVectorF    mPrimVtx;   // primary vertex of current event
+  float		    mBField;	// magnetic field of the current event
   const StPicoDst*  mPicoDst;   //! ptr to picoDst
 
   unsigned int mEventStatMax;   // number of event cuts

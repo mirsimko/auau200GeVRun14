@@ -140,7 +140,7 @@ void StPicoCutsBase::initBase() {
 // _________________________________________________________
 bool StPicoCutsBase::isGoodEvent(StPicoDst const * const picoDst, int *aEventCuts) {
   // -- method to check if good event
-  //    sets also mPicoDst and mPrimVtx
+  //    sets also mPicoDst, mBField and mPrimVtx
   
   // -- set current mPicoDst 
   mPicoDst = picoDst;
@@ -148,8 +148,9 @@ bool StPicoCutsBase::isGoodEvent(StPicoDst const * const picoDst, int *aEventCut
   // -- get picoDst event
   StPicoEvent* picoEvent = mPicoDst->event();
 
-  // -- set current primary vertex
+  // -- set current primary vertex and magnetic field
   mPrimVtx = picoEvent->primaryVertex();
+  mBField = picoEvent->bField();
 
   // -- quick method without providing stats
   if (!aEventCuts) {
@@ -265,7 +266,7 @@ bool StPicoCutsBase::isTPCHadron(StPicoTrack const * const trk, int pidFlag) con
     nSigma = fabs(trk->nSigmaProton());
 
   return ( trk->gPt() >= mPtRange[pidFlag][0] && trk->gPt() < mPtRange[pidFlag][1] &&
-	   abs(trk->eta()) < mEtaMax[pidFlag] &&
+	   fabs(trk->gMom(mPrimVtx, mBField )->pseudorapidity()) < mEtaMax[pidFlag] &&
 	   nSigma < mTPCNSigmaMax[pidFlag] );
 }
 
