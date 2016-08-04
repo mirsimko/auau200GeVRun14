@@ -142,6 +142,7 @@ class StPicoCutsBase : public TNamed
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
   void setCutPtRange(float min, float max, int pidFlag);
+  void setCutEtaRange(float max, int pidFlag);
   void setCutDcaMin(float min, int pidFlag);
   void setCutDcaMinTertiary(float min, int pidFlag);
   void setCutTPCNSigma(float f, int pidFlag);
@@ -231,6 +232,7 @@ class StPicoCutsBase : public TNamed
 
   // -- acceptance - per particle type [ePicoPID]
   float mPtRange[kPicoPIDMax][2];
+  float mEtaRange[kPicoPIDMax];
 
   // -- dca to primary vertex - per particle type [ePicoPID]
   float mDcaMin[kPicoPIDMax];
