@@ -152,7 +152,7 @@ class StPicoCutsBase : public TNamed
   void setCutPtotRangeHybridTOF(float min, float max, int pidFlag);
 
   void setCutPionPtRange(float min, float max);
-  void setCutPionEtaRange(float max);
+  void setCutPionEtaMax(float max);
   void setCutPionDcaMin(float min);
   void setCutPionDcaMinTertiary(float min);
   void setCutTPCNSigmaPion(float f);
@@ -162,7 +162,7 @@ class StPicoCutsBase : public TNamed
   void setCutPionPtotRangeHybridTOF(float min, float max);
 
   void setCutKaonPtRange(float min, float max);
-  void setCutKaonEtaRange(float max);
+  void setCutKaonEtaMax(float max);
   void setCutKaonDcaMin(float min);
   void setCutKaonDcaMinTertiary(float min);
   void setCutTPCNSigmaKaon(float f);
@@ -172,7 +172,7 @@ class StPicoCutsBase : public TNamed
   void setCutKaonPtotRangeHybridTOF(float min, float max);
 
   void setCutProtonPtRange(float min, float max);
-  void setCutProtonEtaRange(float max);
+  void setCutProtonEtaMax(float max);
   void setCutProtonDcaMin(float min);
   void setCutProtonDcaMinTertiary(float min);
   void setCutTPCNSigmaProton(float f);
@@ -199,6 +199,7 @@ class StPicoCutsBase : public TNamed
 		   StLorentzVectorF const & tertiaryMother,  StThreeVectorF const & tertiaryVtx) const;
   
   const float& getHypotheticalMass(int pidFlag)           const;
+  float getTOFDeltaOneOverBetaMax(int pidFlag)		  const;
 
  private:
   
@@ -313,6 +314,7 @@ inline void StPicoCutsBase::setCutProtonPtotRangeTOF(float min, float max)      
 inline void StPicoCutsBase::setCutProtonPtotRangeHybridTOF(float min, float max) { setCutPtotRangeHybridTOF(min, max, StPicoCutsBase::kProton); }
 
 inline const float&    StPicoCutsBase::getHypotheticalMass(int pidFlag)        const { return mHypotheticalMass[pidFlag]; }
+inline float	       StPicoCutsBase::getTOFDeltaOneOverBetaMax(int pidFlag)  const { return mTOFDeltaOneOverBetaMax[pidFlag]; }
 
 // -- check for good hadrons in TPC - in ptRange
 inline bool StPicoCutsBase::isTPCPion(StPicoTrack const * const trk)   const {return isTPCHadron(trk, StPicoCutsBase::kPion); }

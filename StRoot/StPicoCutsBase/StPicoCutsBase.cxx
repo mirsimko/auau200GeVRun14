@@ -266,7 +266,7 @@ bool StPicoCutsBase::isTPCHadron(StPicoTrack const * const trk, int pidFlag) con
     nSigma = fabs(trk->nSigmaProton());
 
   return ( trk->gPt() >= mPtRange[pidFlag][0] && trk->gPt() < mPtRange[pidFlag][1] &&
-	   fabs(trk->gMom(mPrimVtx, mBField )->pseudorapidity()) < mEtaMax[pidFlag] &&
+	   fabs(trk->gMom(mPrimVtx, mBField ).pseudoRapidity()) < mEtaMax[pidFlag] &&
 	   nSigma < mTPCNSigmaMax[pidFlag] );
 }
 
