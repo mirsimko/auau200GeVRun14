@@ -283,8 +283,8 @@ bool StPicoCutsBase::isTOFHadronPID(StPicoTrack const *trk, float const & tofBet
   if (tofBeta <= 0) 
     return false;
   
-  float ptot    = trk->dcaGeometry().momentum().mag();
-  float betaInv = sqrt(ptot*ptot + mHypotheticalMass2[pidFlag]) / ptot;
+  float const ptot    = trk->gMom(mPrimVtx, mBField).mag();
+  float const betaInv = sqrt(ptot*ptot + mHypotheticalMass2[pidFlag]) / ptot;
   return ( fabs(1/tofBeta - betaInv) < mTOFDeltaOneOverBetaMax[pidFlag] );
 }
 
@@ -298,7 +298,7 @@ bool StPicoCutsBase::isTOFHadron(StPicoTrack const *trk, float const & tofBeta, 
   //      not in ptot range : true
 
   // -- only apply, if in ptot range
-  float ptot = trk->dcaGeometry().momentum().mag();  
+  float const ptot = trk->gMom(mPrimVtx, mBField).mag();  
   if (ptot < mPtotRangeTOF[pidFlag][0] || ptot >= mPtotRangeTOF[pidFlag][1])
     return true;
 
@@ -316,7 +316,7 @@ bool StPicoCutsBase::isHybridTOFHadron(StPicoTrack const *trk, float const & tof
   //      no TOF info       : true
 
   // -- only apply, if in ptot range
-  float ptot = trk->dcaGeometry().momentum().mag();  
+  float const ptot = trk->gMom(mPrimVtx, mBField).mag();  
   if (ptot < mPtotRangeHybridTOF[pidFlag][0] || ptot >= mPtotRangeHybridTOF[pidFlag][1])
     return true;
 
