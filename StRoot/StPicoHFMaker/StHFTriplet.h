@@ -58,7 +58,6 @@ class StHFTriplet : public TObject
   float dcaDaughters12() const;
   float dcaDaughters23() const;
   float dcaDaughters31() const;
-  float cosThetaStar() const;
   float v0x() const;
   float v0y() const;
   float v0z() const;
@@ -87,8 +86,6 @@ class StHFTriplet : public TObject
   float mDcaDaughters23;
   float mDcaDaughters31;
 
-  float mCosThetaStar; 
-  
   ClassDef(StHFTriplet,2)
 };
 inline StLorentzVectorF const & StHFTriplet::lorentzVector() const { return mLorentzVector;}
@@ -110,7 +107,6 @@ inline unsigned short StHFTriplet::particle3Idx() const { return mParticle3Idx;}
 inline float StHFTriplet::dcaDaughters12() const { return mDcaDaughters12;}
 inline float StHFTriplet::dcaDaughters23() const { return mDcaDaughters23;}
 inline float StHFTriplet::dcaDaughters31() const { return mDcaDaughters31;}
-inline float StHFTriplet::cosThetaStar()   const { return mCosThetaStar;}
 inline StThreeVectorF const & StHFTriplet::decayVertex() const { return mDecayVertex;}
 inline float StHFTriplet::v0x() const { return mDecayVertex.x();}
 inline float StHFTriplet::v0y() const { return mDecayVertex.y();}

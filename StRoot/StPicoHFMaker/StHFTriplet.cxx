@@ -17,8 +17,7 @@ StHFTriplet::StHFTriplet(): mLorentzVector(StLorentzVectorF()), mDecayVertex(StT
   mParticle1Idx(std::numeric_limits<unsigned short>::max()), mParticle2Idx(std::numeric_limits<unsigned short>::max()), 
   mParticle3Idx(std::numeric_limits<unsigned short>::max()),
   mDcaDaughters12(std::numeric_limits<float>::max()),  mDcaDaughters23(std::numeric_limits<float>::max()),
-  mDcaDaughters31(std::numeric_limits<float>::max()),
-  mCosThetaStar(std::numeric_limits<float>::quiet_NaN()){
+  mDcaDaughters31(std::numeric_limits<float>::max()){
 }
 
 // _________________________________________________________
@@ -27,8 +26,7 @@ StHFTriplet::StHFTriplet(StHFTriplet const * t) :
   mPointingAngle(t->mPointingAngle), mDecayLength(t->mDecayLength), 
   mParticle1Dca(t->mParticle1Dca), mParticle2Dca(t->mParticle2Dca), mParticle3Dca(t->mParticle3Dca),
   mParticle1Idx(t->mParticle1Idx), mParticle2Idx(t->mParticle2Idx), mParticle3Idx(t->mParticle3Idx),
-  mDcaDaughters12(t->mDcaDaughters12),  mDcaDaughters23(t->mDcaDaughters23), mDcaDaughters31(t->mDcaDaughters31), 
-  mCosThetaStar(t->mCosThetaStar){
+  mDcaDaughters12(t->mDcaDaughters12),  mDcaDaughters23(t->mDcaDaughters23), mDcaDaughters31(t->mDcaDaughters31) {
 }
 //------------------------------------
 StHFTriplet::StHFTriplet(StPicoTrack const * const particle1, StPicoTrack const * const particle2, StPicoTrack const * const particle3,
@@ -41,8 +39,7 @@ StHFTriplet::StHFTriplet(StPicoTrack const * const particle1, StPicoTrack const 
   mParticle3Dca(std::numeric_limits<float>::quiet_NaN()),
   mParticle1Idx(p1Idx), mParticle2Idx(p2Idx),  mParticle3Idx(p3Idx),
   mDcaDaughters12(std::numeric_limits<float>::max()), mDcaDaughters23(std::numeric_limits<float>::max()),  
-  mDcaDaughters31(std::numeric_limits<float>::max()),
-  mCosThetaStar(std::numeric_limits<float>::min()) {
+  mDcaDaughters31(std::numeric_limits<float>::max()){
   // -- Create triplet out of 3 tracks
   //     prefixes code:
   //      p1 means particle 1
@@ -117,12 +114,6 @@ StHFTriplet::StHFTriplet(StPicoTrack const * const particle1, StPicoTrack const 
   
   mLorentzVector = p1FourMom + p2FourMom + p3FourMom;
    
-  // -- calculate cosThetaStar
-  //    ->> Lomnitz: Need to rethink theta star
-  StLorentzVectorF const tripletFourMomReverse(-mLorentzVector.px(), -mLorentzVector.py(), -mLorentzVector.pz(), mLorentzVector.e());
-  StLorentzVectorF const p1FourMomStar = p1FourMom.boost(tripletFourMomReverse);
-  mCosThetaStar = std::cos(p1FourMomStar.vect().angle(mLorentzVector.vect()));
-  
   // -- calculate pointing angle and decay length
   StThreeVectorF const vtxToV0 = mDecayVertex - vtx;
   mPointingAngle = vtxToV0.angle(mLorentzVector.vect());
