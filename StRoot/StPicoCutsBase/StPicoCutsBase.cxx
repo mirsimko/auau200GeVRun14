@@ -271,7 +271,7 @@ bool StPicoCutsBase::isTPCHadron(StPicoTrack const * const trk, int pidFlag) con
 }
 
 // _________________________________________________________
-bool StPicoCutsBase::isTOFHadronPID(StPicoTrack const *trk, float const & tofBeta, int pidFlag) const {
+bool StPicoCutsBase::isTOFHadronPID(float ptot, float const & tofBeta, int pidFlag) const {
   // -- check for good hadron in TOF PID
   //    use for 
   //      - primary hadrons 
@@ -283,13 +283,12 @@ bool StPicoCutsBase::isTOFHadronPID(StPicoTrack const *trk, float const & tofBet
   if (tofBeta <= 0) 
     return false;
   
-  float const ptot    = trk->gMom(mPrimVtx, mBField).mag();
   float const betaInv = sqrt(ptot*ptot + mHypotheticalMass2[pidFlag]) / ptot;
   return ( fabs(1/tofBeta - betaInv) < mTOFDeltaOneOverBetaMax[pidFlag] );
 }
 
 // _________________________________________________________
-bool StPicoCutsBase::isTOFHadron(StPicoTrack const *trk, float const & tofBeta, int pidFlag) const {
+bool StPicoCutsBase::isTOFHadron(StPicoTrack const *trk, float const & tofBeta, int pidFlag, StThreeVectorF const & vtx) const {
   // -- check for good hadron in TOF in ptot range
   //    use for 
   //      - primary hadrons 
@@ -298,15 +297,15 @@ bool StPicoCutsBase::isTOFHadron(StPicoTrack const *trk, float const & tofBeta, 
   //      not in ptot range : true
 
   // -- only apply, if in ptot range
-  float const ptot = trk->gMom(mPrimVtx, mBField).mag();  
+  float const ptot = trk->gMom(vtx, mBField).mag();  
   if (ptot < mPtotRangeTOF[pidFlag][0] || ptot >= mPtotRangeTOF[pidFlag][1])
     return true;
 
-  return isTOFHadronPID(trk, tofBeta, pidFlag);
+  return isTOFHadronPID(ptot, tofBeta, pidFlag);
 }
 
 // _________________________________________________________
-bool StPicoCutsBase::isHybridTOFHadron(StPicoTrack const *trk, float const & tofBeta, int pidFlag) const {
+bool StPicoCutsBase::isHybridTOFHadron(StPicoTrack const *trk, float const & tofBeta, int pidFlag, StThreeVectorF const & vtx) const {
   // -- check for good hadron in TOF in ptot range
   //    use for 
   //      - primary hadrons 
@@ -316,7 +315,7 @@ bool StPicoCutsBase::isHybridTOFHadron(StPicoTrack const *trk, float const & tof
   //      no TOF info       : true
 
   // -- only apply, if in ptot range
-  float const ptot = trk->gMom(mPrimVtx, mBField).mag();  
+  float const ptot = trk->gMom(vtx, mBField).mag();  
   if (ptot < mPtotRangeHybridTOF[pidFlag][0] || ptot >= mPtotRangeHybridTOF[pidFlag][1])
     return true;
 
@@ -324,7 +323,7 @@ bool StPicoCutsBase::isHybridTOFHadron(StPicoTrack const *trk, float const & tof
   if (tofBeta <= 0 || tofBeta != tofBeta ) 
     return true;
 
-  return isTOFHadronPID(trk, tofBeta, pidFlag);
+  return isTOFHadronPID(ptot, tofBeta, pidFlag);
 }
 
 // =======================================================================
