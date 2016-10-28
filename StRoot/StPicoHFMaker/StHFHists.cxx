@@ -99,7 +99,6 @@ void StHFHists::init (TList * outList, unsigned int mode){
     mTripletList->Add(new TH2F("mh2TripletParticle1DcaVsPt","tripletParticle1DcaVsPt;p_{T}(triplet)(GeV/c));dcaDaughters(cm)",120,0,12,200,0,0.02));
     mTripletList->Add(new TH2F("mh2TripletParticle2DcaVsPt","tripletParticle2DcaVsPt;p_{T}(triplet)(GeV/c));dcaDaughters(cm)",120,0,12,200,0,0.02));
     mTripletList->Add(new TH2F("mh2TripletParticle3DcaVsPt","tripletParticle3DcaVsPt;p_{T}(triplet)(GeV/c));dcaDaughters(cm)",120,0,12,200,0,0.02));
-    mTripletList->Add(new TH2F("mh2TripletCosThetaStarVsPt","tripletCosThetaStarVsPt;p_{T}(triplet)(GeV/c));cos(#theta)",120,0,12,550,0,1.1));
     mTripletList->Add(new TH2F("mh2TripletDcaDaughters12VsPt","tripletDcaDaughters12VsPt;p_{T}(triplet)(GeV/c));dcaDaughters(cm)",120,0,12,200,0,0.02));
     mTripletList->Add(new TH2F("mh2TripletDcaDaughters23VsPt","tripletDcaDaughters23VsPt;p_{T}(triplet)(GeV/c));dcaDaughters(cm)",120,0,12,200,0,0.02));
     mTripletList->Add(new TH2F("mh2TripletDcaDaughters31VsPt","tripletDcaDaughters31VsPt;p_{T}(triplet)(GeV/c));dcaDaughters(cm)",120,0,12,200,0,0.02));
@@ -157,7 +156,6 @@ void StHFHists::fillTripletHists(StHFTriplet const* const t, bool const fillMass
   (static_cast<TH2F*>(mTripletList->FindObject("mh2TripletParticle1DcaVsPt")))->Fill(t->pt(),t->particle1Dca());
   (static_cast<TH2F*>(mTripletList->FindObject("mh2TripletParticle2DcaVsPt")))->Fill(t->pt(),t->particle2Dca());
   (static_cast<TH2F*>(mTripletList->FindObject("mh2TripletParticle3DcaVsPt")))->Fill(t->pt(),t->particle3Dca());
-  (static_cast<TH2F*>(mTripletList->FindObject("mh2TripletCosThetaStarVsPt")))->Fill(t->pt(),t->cosThetaStar());
   (static_cast<TH2F*>(mTripletList->FindObject("mh2TripletDcaDaughters12VsPt")))->Fill(t->pt(),t->dcaDaughters12());
   (static_cast<TH2F*>(mTripletList->FindObject("mh2TripletDcaDaughters23VsPt")))->Fill(t->pt(),t->dcaDaughters23());
   (static_cast<TH2F*>(mTripletList->FindObject("mh2TripletDcaDaughters31VsPt")))->Fill(t->pt(),t->dcaDaughters31());

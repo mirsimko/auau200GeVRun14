@@ -87,9 +87,9 @@ class StPicoCutsBase : public TNamed
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
   // -- TOF PID
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
-  bool isTOFHadronPID(StPicoTrack const *trk, float const & tofBeta, int pidFlag) const;
-  bool isTOFHadron(StPicoTrack const *trk, float const & tofBeta, int pidFlag) const;
-  bool isHybridTOFHadron(StPicoTrack const *trk, float const & tofBeta, int pidFlag) const;
+  bool isTOFHadronPID(float ptot, float const & tofBeta, int pidFlag) const;
+  bool isTOFHadron(StPicoTrack const *trk, float const & tofBeta, int pidFlag, StThreeVectorF const & vtx) const;
+  bool isHybridTOFHadron(StPicoTrack const *trk, float const & tofBeta, int pidFlag, StThreeVectorF const & vtx) const;
 
   // -- Is TOF particle in ptot range
   //    if track has no TOF information - return false
@@ -100,9 +100,9 @@ class StPicoCutsBase : public TNamed
   bool isTOFKaon(StPicoTrack const *trk) const;
   bool isTOFProton(StPicoTrack const *trk) const;
 
-  bool isTOFPion(StPicoTrack const *trk,   float const & tofBeta) const;
-  bool isTOFKaon(StPicoTrack const *trk,   float const & tofBeta) const;
-  bool isTOFProton(StPicoTrack const *trk, float const & tofBeta) const;
+  bool isTOFPion(StPicoTrack const *trk,   float const & tofBeta, StThreeVectorF const & vtx) const;
+  bool isTOFKaon(StPicoTrack const *trk,   float const & tofBeta, StThreeVectorF const & vtx) const;
+  bool isTOFProton(StPicoTrack const *trk, float const & tofBeta, StThreeVectorF const & vtx) const;
 
   // -- Is TOF particle in ptot range
   //    if track has no TOF information - return true
@@ -113,9 +113,9 @@ class StPicoCutsBase : public TNamed
   bool isHybridTOFKaon(StPicoTrack const *trk) const;
   bool isHybridTOFProton(StPicoTrack const *trk) const;
 
-  bool isHybridTOFPion(StPicoTrack const *trk,   float const & tofBeta) const;
-  bool isHybridTOFKaon(StPicoTrack const *trk,   float const & tofBeta) const;
-  bool isHybridTOFProton(StPicoTrack const *trk, float const & tofBeta) const;
+  bool isHybridTOFPion(StPicoTrack const *trk,   float const & tofBeta, StThreeVectorF const & vtx) const;
+  bool isHybridTOFKaon(StPicoTrack const *trk,   float const & tofBeta, StThreeVectorF const & vtx) const;
+  bool isHybridTOFProton(StPicoTrack const *trk, float const & tofBeta, StThreeVectorF const & vtx) const;
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
   
@@ -322,25 +322,37 @@ inline bool StPicoCutsBase::isTPCKaon(StPicoTrack const * const trk)   const {re
 inline bool StPicoCutsBase::isTPCProton(StPicoTrack const * const trk) const {return isTPCHadron(trk, StPicoCutsBase::kProton); }
 
 inline bool StPicoCutsBase::isTOFPion(StPicoTrack const *trk)   const { float tofBeta = getTofBeta(trk);  
-                                                                        return isTOFHadron(trk, tofBeta, StPicoCutsBase::kPion); }
+                                                                        return isTOFHadron(trk, tofBeta, StPicoCutsBase::kPion, mPrimVtx); }
 inline bool StPicoCutsBase::isTOFKaon(StPicoTrack const *trk)   const { float tofBeta = getTofBeta(trk);  
-                                                                        return isTOFHadron(trk, tofBeta, StPicoCutsBase::kKaon); }
+                                                                        return isTOFHadron(trk, tofBeta, StPicoCutsBase::kKaon, mPrimVtx); }
 inline bool StPicoCutsBase::isTOFProton(StPicoTrack const *trk) const { float tofBeta = getTofBeta(trk);  
-                                                                        return isTOFHadron(trk, tofBeta, StPicoCutsBase::kProton); }
+                                                                        return isTOFHadron(trk, tofBeta, StPicoCutsBase::kProton, mPrimVtx); }
 
-inline bool StPicoCutsBase::isTOFPion(StPicoTrack const *trk,   float const & tofBeta) const { return isTOFHadron(trk, tofBeta, StPicoCutsBase::kPion); }
-inline bool StPicoCutsBase::isTOFKaon(StPicoTrack const *trk,   float const & tofBeta) const { return isTOFHadron(trk, tofBeta, StPicoCutsBase::kKaon); }
-inline bool StPicoCutsBase::isTOFProton(StPicoTrack const *trk, float const & tofBeta) const { return isTOFHadron(trk, tofBeta, StPicoCutsBase::kProton); }
+inline bool StPicoCutsBase::isTOFPion(StPicoTrack const *trk,   float const & tofBeta, StThreeVectorF const & vtx) const { 
+  return isTOFHadron(trk, tofBeta, StPicoCutsBase::kPion, vtx); 
+}
+inline bool StPicoCutsBase::isTOFKaon(StPicoTrack const *trk,   float const & tofBeta, StThreeVectorF const & vtx) const { 
+  return isTOFHadron(trk, tofBeta, StPicoCutsBase::kKaon, vtx); 
+}
+inline bool StPicoCutsBase::isTOFProton(StPicoTrack const *trk, float const & tofBeta, StThreeVectorF const & vtx) const { 
+  return isTOFHadron(trk, tofBeta, StPicoCutsBase::kProton, vtx); 
+}
 
-inline bool StPicoCutsBase::isHybridTOFPion(StPicoTrack const *trk)   const { float tofBeta = getTofBeta(trk);  
-                                                                            return isHybridTOFHadron(trk, tofBeta, StPicoCutsBase::kPion); }
-inline bool StPicoCutsBase::isHybridTOFKaon(StPicoTrack const *trk)   const { float tofBeta = getTofBeta(trk);  
-                                                                              return isHybridTOFHadron(trk, tofBeta, StPicoCutsBase::kKaon); }
-inline bool StPicoCutsBase::isHybridTOFProton(StPicoTrack const *trk) const { float tofBeta = getTofBeta(trk);  
-                                                                              return isHybridTOFHadron(trk, tofBeta, StPicoCutsBase::kProton); }
+inline bool StPicoCutsBase::isHybridTOFPion(StPicoTrack const *trk)   const { 
+  float tofBeta = getTofBeta(trk);  
+  return isHybridTOFHadron(trk, tofBeta, StPicoCutsBase::kPion, mPrimVtx); 
+}
+inline bool StPicoCutsBase::isHybridTOFKaon(StPicoTrack const *trk)   const { 
+  float tofBeta = getTofBeta(trk);  
+  return isHybridTOFHadron(trk, tofBeta, StPicoCutsBase::kKaon, mPrimVtx); 
+}
+inline bool StPicoCutsBase::isHybridTOFProton(StPicoTrack const *trk) const { 
+  float tofBeta = getTofBeta(trk);  
+  return isHybridTOFHadron(trk, tofBeta, StPicoCutsBase::kProton, mPrimVtx); 
+}
 
-inline bool StPicoCutsBase::isHybridTOFPion(StPicoTrack const *trk,   float const & tofBeta) const { return isHybridTOFHadron(trk, tofBeta, StPicoCutsBase::kPion); }
-inline bool StPicoCutsBase::isHybridTOFKaon(StPicoTrack const *trk,   float const & tofBeta) const { return isHybridTOFHadron(trk, tofBeta, StPicoCutsBase::kKaon); }
-inline bool StPicoCutsBase::isHybridTOFProton(StPicoTrack const *trk, float const & tofBeta) const { return isHybridTOFHadron(trk, tofBeta, StPicoCutsBase::kProton); }
+inline bool StPicoCutsBase::isHybridTOFPion(StPicoTrack const *trk,   float const & tofBeta, StThreeVectorF const & vtx) const { return isHybridTOFHadron(trk, tofBeta, StPicoCutsBase::kPion, vtx); }
+inline bool StPicoCutsBase::isHybridTOFKaon(StPicoTrack const *trk,   float const & tofBeta, StThreeVectorF const & vtx) const { return isHybridTOFHadron(trk, tofBeta, StPicoCutsBase::kKaon, vtx); }
+inline bool StPicoCutsBase::isHybridTOFProton(StPicoTrack const *trk, float const & tofBeta, StThreeVectorF const & vtx) const { return isHybridTOFHadron(trk, tofBeta, StPicoCutsBase::kProton, vtx); }
 
 #endif
