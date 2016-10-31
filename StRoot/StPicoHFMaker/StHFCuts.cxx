@@ -25,7 +25,8 @@ StHFCuts::StHFCuts() : StPicoCutsBase("HFCutsBase"),
   mSecondaryTripletDcaDaughters31Max(std::numeric_limits<float>::max()), 
   mSecondaryTripletDecayLengthMin(std::numeric_limits<float>::lowest()), mSecondaryTripletDecayLengthMax(std::numeric_limits<float>::max()), 
   mSecondaryTripletCosThetaMin(std::numeric_limits<float>::lowest()), 
-  mSecondaryTripletMassMin(std::numeric_limits<float>::lowest()), mSecondaryTripletMassMax(std::numeric_limits<float>::max()) {
+  mSecondaryTripletMassMin(std::numeric_limits<float>::lowest()), mSecondaryTripletMassMax(std::numeric_limits<float>::max()),
+  mSecondaryTripletDcaToPvMax(std::numeric_limits<float>::lowest()) {
   // -- default constructor
 }
 
@@ -47,7 +48,8 @@ StHFCuts::StHFCuts(const Char_t *name) : StPicoCutsBase(name),
   mSecondaryTripletDcaDaughters31Max(std::numeric_limits<float>::max()), 
   mSecondaryTripletDecayLengthMin(std::numeric_limits<float>::lowest()), mSecondaryTripletDecayLengthMax(std::numeric_limits<float>::max()), 
   mSecondaryTripletCosThetaMin(std::numeric_limits<float>::lowest()), 
-  mSecondaryTripletMassMin(std::numeric_limits<float>::lowest()), mSecondaryTripletMassMax(std::numeric_limits<float>::max()) {
+  mSecondaryTripletMassMin(std::numeric_limits<float>::lowest()), mSecondaryTripletMassMax(std::numeric_limits<float>::max()),
+  mSecondaryTripletDcaToPvMax(std::numeric_limits<float>::lowest())  {
   // -- constructor
 }
 
@@ -99,5 +101,6 @@ bool StHFCuts::isGoodSecondaryVertexTriplet(StHFTriplet const & triplet) const {
 	   triplet.decayLength() > mSecondaryTripletDecayLengthMin && triplet.decayLength() < mSecondaryTripletDecayLengthMax &&
 	   triplet.dcaDaughters12() < mSecondaryTripletDcaDaughters12Max &&
 	   triplet.dcaDaughters23() < mSecondaryTripletDcaDaughters23Max &&
-	   triplet.dcaDaughters31() < mSecondaryTripletDcaDaughters31Max);
+	   triplet.dcaDaughters31() < mSecondaryTripletDcaDaughters31Max &&
+	   fabs(std::sin(triplet.pointingAngle())*triplet.decayLength()) < mSecondaryTripletDcaToPvMax);
 }

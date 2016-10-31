@@ -9,6 +9,7 @@
                 - Kunsu Oh        (kunsuoh@gmail.com),  
                 - Jochen Thaeder  (jmthader@lbl.gov),   
                 - Guannan Xie     (guannanxie@lbl.gov)  
+		- Miroslav Simko  (simko@ujf.cas.cz)
                   
 **Instituations:**  
                 - Lawrence Berkeley National Lab.  
@@ -16,6 +17,7 @@
                 - University of Science and Technology, China  
                 - Purdue University,  
                 - Pusan National University, South Korea  
+		- Nuclear Physics Institute of the Czech Academy of Sciences, Czech Republic
 
 ### Introduction and how to:  
 [PicoHfLib](https://drupal.star.bnl.gov/STAR/system/files/2016-06-01-Jochen-Mustafa_0.pdf)  
