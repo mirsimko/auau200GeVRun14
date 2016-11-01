@@ -403,6 +403,8 @@ float StPicoCutsBase::getTofBeta(StPicoTrack const * const trk,
 
   // -- clean up
   mTOFCorr->clearContainers();
+  if (beta <= 0)
+    return std::numeric_limits<float>::quiet_NaN();
   
   return beta;
 }
@@ -438,6 +440,9 @@ float StPicoCutsBase::getTofBeta(StPicoTrack const * const trk,
   // -- clean up
   mTOFCorr->clearContainers();
   
+  if (beta <= 0)
+    return std::numeric_limits<float>::quiet_NaN();
+
   return beta;
 }
 

@@ -30,7 +30,6 @@
 
   <output fromScratch="*.root"    toURL="$PRODPATH/" />
   <output fromScratch="*.log.tgz" toURL="$LOGPATH/" />
-  <output fromScratch="*.log"     toURL="$LOGPATH/" />
   
   <SandBox installer="ZIP">
     <Package name="LocalLibraries">
