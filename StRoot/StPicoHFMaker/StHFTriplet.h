@@ -64,6 +64,7 @@ class StHFTriplet : public TObject
   float px() const;
   float py() const;
   float pz() const;
+  float DcaToPrimaryVertex() const;
 
  private:
   StHFTriplet(StHFTriplet const &);
@@ -111,4 +112,5 @@ inline StThreeVectorF const & StHFTriplet::decayVertex() const { return mDecayVe
 inline float StHFTriplet::v0x() const { return mDecayVertex.x();}
 inline float StHFTriplet::v0y() const { return mDecayVertex.y();}
 inline float StHFTriplet::v0z() const { return mDecayVertex.z();}
+inline float StHFTriplet::DcaToPrimaryVertex() const {return mDecayLength*std::sin(mPointingAngle);}
 #endif

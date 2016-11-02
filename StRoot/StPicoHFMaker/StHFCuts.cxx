@@ -95,6 +95,14 @@ bool StHFCuts::isGoodTertiaryVertexPair(StHFPair const & pair) const {
 // _________________________________________________________
 bool StHFCuts::isGoodSecondaryVertexTriplet(StHFTriplet const & triplet) const {
   // -- check for good secondary vertex triplet
+  // float dcaDaughters = triplet.dcaDaughters12() > triplet.dcaDaughters23() ? triplet.dcaDaughters12() : triplet.dcaDaughters23();
+  // dcaDaughters = dcaDaughters > triplet.dcaDaughters31() ? dcaDaughters : triplet.dcaDaughters31();
+  // cout << triplet.m() << endl;
+  // cout << std::cos(triplet.pointingAngle()) << endl;
+  // cout << triplet.decayLength()             << endl;
+  // cout << dcaDaughters << endl;
+  // cout << fabs(std::sin(triplet.pointingAngle())*triplet.decayLength()) << endl;
+  // cout << "+++++++++++++++++++++++++++++++++++++++" << endl;
 
   return ( triplet.m() > mSecondaryTripletMassMin && triplet.m() < mSecondaryTripletMassMax &&
 	   std::cos(triplet.pointingAngle()) > mSecondaryTripletCosThetaMin &&
