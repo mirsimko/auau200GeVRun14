@@ -2,46 +2,55 @@
 #include <cmath>
 #include <utility>
 
-#include "StHFPair.h"
+#include "StHFClosePair.h"
 
 #include "StarClassLibrary/StPhysicalHelixD.hh"
 #include "StarClassLibrary/SystemOfUnits.h"
 #include "StPicoDstMaker/StPicoTrack.h"
 
-ClassImp(StHFPair)
+ClassImp(StHFClosePair)
 
 // _________________________________________________________
-StHFClosePair::StHFClosePair() : mDecayLength(std::numeric_limits<float>::quiet_NaN()), 
+StHFClosePair::StHFClosePair() :
   mParticle1Dca(std::numeric_limits<float>::quiet_NaN()), mParticle2Dca(std::numeric_limits<float>::quiet_NaN()), 
   mDcaDaughters(std::numeric_limits<float>::max()), 
   mParticle1Idx(std::numeric_limits<unsigned short>::max()), mParticle2Idx(std::numeric_limits<unsigned short>::max()), 
-  mMassHypothesis1(std::numeric_limits<float>::quiet_NaN()), mMassHypothesis2(std::numeric_limits<float>::quiet_NaN())
+  mMassHypothesis1(std::numeric_limits<float>::quiet_NaN()), mMassHypothesis2(std::numeric_limits<float>::quiet_NaN()),
+  mP1StraightLine(NULL), mP2StraightLine(NULL), mP1Helix(NULL), mP2Helix(NULL)
 {}
 
 // _________________________________________________________
-StHFClosePair::StHFClosePair(StHFClosePair const &rhs) : mDecayLength(rhs.decayLength),
-  mParticle1Dca(rhs.mParticle1Dca), mParticle2Dca(rhs.mParticle2Dca), mDcaToPrimaryVertex(rhs.mDcaToPrimaryVertex),
+StHFClosePair::StHFClosePair(StHFClosePair const &rhs) :
+  mParticle1Dca(rhs.mParticle1Dca), mParticle2Dca(rhs.mParticle2Dca),
   mDcaDaughters(rhs.mDcaDaughters), mParticle1Idx(rhs.mParticle1Idx), mParticle2Idx(rhs.mParticle2Idx),
   mMassHypothesis1(rhs.mMassHypothesis1), mMassHypothesis2(rhs.mMassHypothesis2),
   mP1AtDcaToP2(rhs.mP1AtDcaToP2), mP2AtDcaToP1(rhs.mP2AtDcaToP1)
-{}
+{
+  mP1StraightLine = new StPhysicalHelixD(*(rhs.mP1StraightLine)); // do a deep copy of the pointees
+  mP2StraightLine = new StPhysicalHelixD(*(rhs.mP2StraightLine));
+  mP1Helix = new StPhysicalHelixD(*(rhs.mP1Helix));
+  mP2Helix = new StPhysicalHelixD(*(rhs.mP2Helix));
+}
 
 // _________________________________________________________
-StHFClosePair & operator= (StHFClosePair const &rhs)
+StHFClosePair::~StHFClosePair()
 {
-  StHFClosePair tmp(rhs);
-  std::swap(*this, tmp);
-  return *this;
+  delete mP1StraightLine;
+  delete mP2StraightLine;
+  delete mP1Helix;
+  delete mP2Helix;
 }
 
 // _________________________________________________________
 StHFClosePair::StHFClosePair(StPicoTrack const * particle1, StPicoTrack const * particle2, 
 			     unsigned short p1Idx, unsigned short p2Idx,
-			     StThreeVectorF const & vtx, float bField, bool useStraightLine = true) :
-  mDecayLength(std::numeric_limits<float>::quiet_NaN()), 
+			     float p1mass, float p2mass,
+			     StThreeVectorF const & vtx, float bField, bool useStraightLine) :
   mParticle1Dca(std::numeric_limits<float>::quiet_NaN()), mParticle2Dca(std::numeric_limits<float>::quiet_NaN()), 
-  mDcaToPrimaryVertex(std::numeric_limits<float>::quiet_NaN()), mDcaDaughters(std::numeric_limits<float>::max()), 
-  mParticle1Idx(p1Idx), mParticle2Idx(p2Idx)
+  mDcaDaughters(std::numeric_limits<float>::max()), 
+  mParticle1Idx(p1Idx), mParticle2Idx(p2Idx),
+  mMassHypothesis1(p1mass), mMassHypothesis2(p2mass),
+  mP1StraightLine(NULL), mP2StraightLine(NULL), mP1Helix(NULL), mP2Helix(NULL)
 {
   // see if the particles are the same
   if ((!particle1 || !particle2) || (mParticle1Idx == mParticle2Idx) || (particle1->id() == particle2->id())) {
@@ -49,26 +58,28 @@ StHFClosePair::StHFClosePair(StPicoTrack const * particle1, StPicoTrack const * 
     mParticle2Idx = std::numeric_limits<unsigned short>::max();
     return;
   }
+  mP1Helix = new StPhysicalHelixD( particle1->dcaGeometry().helix());
+  mP2Helix = new StPhysicalHelixD( particle2->dcaGeometry().helix());
   // -- move origins of helices to the primary vertex origin
-  p1Helix.moveOrigin(p1Helix.pathLength(vtx));
-  p2Helix.moveOrigin(p2Helix.pathLength(vtx));
+  mP1Helix->moveOrigin(mP1Helix->pathLength(vtx));
+  mP2Helix->moveOrigin(mP2Helix->pathLength(vtx));
 
   // -- use straight lines approximation to get point of DCA of particle1-particle2 pair
-  StThreeVectorF const p1Mom = p1Helix.momentum(bField * kilogauss);
-  StThreeVectorF const p2Mom = p2Helix.momentum(bField * kilogauss);
-  StPhysicalHelixD const p1StraightLine(p1Mom, p1Helix.origin(), 0, particle1->charge());
-  StPhysicalHelixD const p2StraightLine(p2Mom, p2Helix.origin(), 0, particle2->charge());
+  StThreeVectorF const p1Mom = mP1Helix->momentum(bField * kilogauss);
+  StThreeVectorF const p2Mom = mP2Helix->momentum(bField * kilogauss);
+  mP1StraightLine = new StPhysicalHelixD(p1Mom, mP1Helix->origin(), 0, particle1->charge());
+  mP2StraightLine = new StPhysicalHelixD(p2Mom, mP2Helix->origin(), 0, particle2->charge());
 
-  pair<double, double> const ss = (useStraightLine) ? p1StraightLine.pathLengths(p2StraightLine) : p1Helix.pathLengths(p2Helix);
-  mP1AtDcaToP2 = (useStraightLine) ? p1StraightLine.at(ss.first) : p1Helix.at(ss.first);
-  mP2AtDcaToP1 = (useStraightLine) ? p2StraightLine.at(ss.second) : p2Helix.at(ss.second);
+  pair<double, double> const ss = (useStraightLine) ? mP1StraightLine->pathLengths(*mP2StraightLine) : mP1Helix->pathLengths(*mP2Helix);
+  mP1AtDcaToP2 = (useStraightLine) ? mP1StraightLine->at(ss.first) : mP1Helix->at(ss.first);
+  mP2AtDcaToP1 = (useStraightLine) ? mP2StraightLine->at(ss.second) : mP2Helix->at(ss.second);
 
   // -- calculate DCA of particle1 to particle2 at their DCA
   mDcaDaughters = (mP1AtDcaToP2 - mP2AtDcaToP1).mag();
 
   // -- single part DCAs
-  mParticle1Dca = (p1Helix.origin() - vtx).mag();
-  mParticle2Dca = (p2Helix.origin() - vtx).mag();
+  mParticle1Dca = (mP1Helix->origin() - vtx).mag();
+  mParticle2Dca = (mP2Helix->origin() - vtx).mag();
 }
 
 // _________________________________________________________

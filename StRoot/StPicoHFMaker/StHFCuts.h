@@ -24,6 +24,7 @@
 
 
 class StHFPair;
+class StHFClosePair;
 class StHFTriplet;
 
 class StHFCuts : public StPicoCutsBase
@@ -41,6 +42,7 @@ class StHFCuts : public StPicoCutsBase
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
 
   bool isClosePair(StHFPair const & pair) const;
+  bool isClosePair(StHFClosePair const & pair) const;
 
   bool isGoodSecondaryVertexPair(StHFPair const & pair) const;
   bool isGoodTertiaryVertexPair(StHFPair const & pair) const;
@@ -165,10 +167,8 @@ inline void StHFCuts::setCutSecondaryTriplet(float dcaDaughters12Max, float dcaD
   mSecondaryTripletCosThetaMin = cosThetaMin;
   mSecondaryTripletMassMin = massMin; mSecondaryTripletMassMax = massMax; 
 
-  // setting up the doublet
+  // setting up the pair
   mSecondaryPairDcaDaughtersMax = mSecondaryTripletDcaDaughters12Max;
-  mSecondaryPairDecayLengthMin = mSecondaryTripletDecayLengthMin;
-  mSecondaryPairDcaDaughtersMax = mSecondaryTripletDecayLengthMax;
 }
 
 inline const float&    StHFCuts::cutSecondaryPairDcaDaughtersMax()       const { return mSecondaryPairDcaDaughtersMax; }

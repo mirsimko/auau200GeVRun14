@@ -29,6 +29,7 @@
 
 class StPicoTrack;
 class StPicoEvent;
+class StHFClosePair;
 
 class StHFTriplet : public TObject
 {
@@ -39,6 +40,10 @@ class StHFTriplet : public TObject
 	     float p1MassHypo, float p2MassHypo, float p3MassHypo,
 	     unsigned short p1Idx, unsigned short p2Idx, unsigned short p3Idx,
 	     StThreeVectorF const & vtx, float bField);
+  StHFTriplet(StHFClosePair * pair, StPicoTrack const * particle3, 
+	      float p3MassHypo,
+	      unsigned short p3Idx,
+	      StThreeVectorF const & vtx, float bField);
   ~StHFTriplet() {;}
 
   StLorentzVectorF const & lorentzVector() const;

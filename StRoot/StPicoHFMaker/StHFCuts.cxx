@@ -3,6 +3,7 @@
 #include "StHFCuts.h"
 
 #include "StHFPair.h"
+#include "StHFClosePair.h"
 #include "StHFTriplet.h"
 
 ClassImp(StHFCuts)
@@ -26,7 +27,7 @@ StHFCuts::StHFCuts() : StPicoCutsBase("HFCutsBase"),
   mSecondaryTripletDecayLengthMin(std::numeric_limits<float>::lowest()), mSecondaryTripletDecayLengthMax(std::numeric_limits<float>::max()), 
   mSecondaryTripletCosThetaMin(std::numeric_limits<float>::lowest()), 
   mSecondaryTripletMassMin(std::numeric_limits<float>::lowest()), mSecondaryTripletMassMax(std::numeric_limits<float>::max()),
-  mSecondaryTripletDcaToPvMax(std::numeric_limits<float>::lowest()) {
+  mSecondaryTripletDcaToPvMax(std::numeric_limits<float>::max()) {
   // -- default constructor
 }
 
@@ -49,7 +50,7 @@ StHFCuts::StHFCuts(const Char_t *name) : StPicoCutsBase(name),
   mSecondaryTripletDecayLengthMin(std::numeric_limits<float>::lowest()), mSecondaryTripletDecayLengthMax(std::numeric_limits<float>::max()), 
   mSecondaryTripletCosThetaMin(std::numeric_limits<float>::lowest()), 
   mSecondaryTripletMassMin(std::numeric_limits<float>::lowest()), mSecondaryTripletMassMax(std::numeric_limits<float>::max()),
-  mSecondaryTripletDcaToPvMax(std::numeric_limits<float>::lowest())  {
+  mSecondaryTripletDcaToPvMax(std::numeric_limits<float>::max())  {
   // -- constructor
 }
 
@@ -68,6 +69,13 @@ bool StHFCuts::isClosePair(StHFPair const & pair) const {
   return ( std::cos(pair.pointingAngle()) > mSecondaryPairCosThetaMin &&
 	   pair.decayLength() > mSecondaryPairDecayLengthMin && pair.decayLength() < mSecondaryPairDecayLengthMax &&
 	   pair.dcaDaughters() < mSecondaryPairDcaDaughtersMax);
+}
+
+// _________________________________________________________
+bool StHFCuts::isClosePair(StHFClosePair const & pair) const {
+  // -- check for a pair which is close in dca w/o mass constraint,
+  //    using secondary vertex cuts
+  return (pair.dcaDaughters() < mSecondaryPairDcaDaughtersMax);
 }
 
 // _________________________________________________________
