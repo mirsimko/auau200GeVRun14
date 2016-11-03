@@ -73,8 +73,7 @@ bool StHFCuts::isClosePair(StHFPair const & pair) const {
 
 // _________________________________________________________
 bool StHFCuts::isClosePair(StHFClosePair const & pair) const {
-  // -- check for a pair which is close in dca w/o mass constraint,
-  //    using secondary vertex cuts
+  // -- check for a pair which is close in dca w/o mass constraint works with the faster StHFClosePair
   return (pair.dcaDaughters() < mSecondaryPairDcaDaughtersMax);
 }
 

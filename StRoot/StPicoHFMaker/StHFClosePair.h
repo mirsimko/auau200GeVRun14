@@ -1,6 +1,21 @@
 #ifndef StHFClosePair_HH
 #define StHFClosePair_HH
 
+/* **************************************************
+ *  Class based on StPair created for three body decays 
+ *  
+ *  The purpose of this class, compared to StHFPair, is to not compute things that 
+ *  aren't necessary for the three body decays like mass, etc. Objects like straight
+ *  line approximation of the tracks are kept for later use for the StHFTriplet
+ * **************************************************
+ *
+ *  Initial Authors: 
+ *        **  Miroslav Simko
+ *
+ *  ** Code Maintainer 
+ *
+ * **************************************************
+ */
 #include "TObject.h"
 #include "TClonesArray.h"
 
