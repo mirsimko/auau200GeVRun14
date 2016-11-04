@@ -1,6 +1,7 @@
 #include <limits>
 #include <cmath>
 #include <utility>
+#include <iostream>
 
 #include "StHFClosePair.h"
 
@@ -8,6 +9,7 @@
 #include "StarClassLibrary/SystemOfUnits.h"
 #include "StPicoDstMaker/StPicoTrack.h"
 
+using namespace std;
 ClassImp(StHFClosePair)
 
 // _________________________________________________________
@@ -43,23 +45,31 @@ StHFClosePair::~StHFClosePair()
 
 // _________________________________________________________
 StHFClosePair::StHFClosePair(StPicoTrack const * particle1, StPicoTrack const * particle2, 
-			     unsigned short p1Idx, unsigned short p2Idx,
 			     float p1mass, float p2mass,
+			     unsigned short p1Idx, unsigned short p2Idx,
 			     StThreeVectorF const & vtx, float bField, bool useStraightLine) :
   mParticle1Dca(std::numeric_limits<float>::quiet_NaN()), mParticle2Dca(std::numeric_limits<float>::quiet_NaN()), 
   mDcaDaughters(std::numeric_limits<float>::max()), 
-  mParticle1Idx(p1Idx), mParticle2Idx(p2Idx),
   mMassHypothesis1(p1mass), mMassHypothesis2(p2mass),
+  mParticle1Idx(p1Idx), mParticle2Idx(p2Idx),
   mP1StraightLine(NULL), mP2StraightLine(NULL), mP1Helix(NULL), mP2Helix(NULL)
 {
   // see if the particles are the same
-  if ((!particle1 || !particle2) || (mParticle1Idx == mParticle2Idx) || (particle1->id() == particle2->id())) {
+  if(!particle1 || !particle2 || mParticle1Idx == mParticle2Idx ||  particle1->id() == particle2->id()) {
     mParticle1Idx = std::numeric_limits<unsigned short>::max();
     mParticle2Idx = std::numeric_limits<unsigned short>::max();
     return;
   }
+
   mP1Helix = new StPhysicalHelixD( particle1->dcaGeometry().helix());
   mP2Helix = new StPhysicalHelixD( particle2->dcaGeometry().helix());
+  if (!mP1Helix || !mP2Helix)
+  {
+    cerr << "StHFClosePair::StHFClosePair(...): Helixes not initiated" << endl;
+    mParticle1Idx = std::numeric_limits<unsigned short>::max();
+    mParticle2Idx = std::numeric_limits<unsigned short>::max();
+    return;
+  }
   // -- move origins of helices to the primary vertex origin
   mP1Helix->moveOrigin(mP1Helix->pathLength(vtx));
   mP2Helix->moveOrigin(mP2Helix->pathLength(vtx));
@@ -70,6 +80,13 @@ StHFClosePair::StHFClosePair(StPicoTrack const * particle1, StPicoTrack const * 
   mP1StraightLine = new StPhysicalHelixD(p1Mom, mP1Helix->origin(), 0, particle1->charge());
   mP2StraightLine = new StPhysicalHelixD(p2Mom, mP2Helix->origin(), 0, particle2->charge());
 
+  if(!mP1StraightLine || !mP2StraightLine)
+  {
+    cerr << "StHFClosePair::StHFClosePair(...): StraightLines not initiated" << endl;
+    mParticle1Idx = std::numeric_limits<unsigned short>::max();
+    mParticle2Idx = std::numeric_limits<unsigned short>::max();
+    return;
+  }
   pair<double, double> const ss = (useStraightLine) ? mP1StraightLine->pathLengths(*mP2StraightLine) : mP1Helix->pathLengths(*mP2Helix);
   mP1AtDcaToP2 = (useStraightLine) ? mP1StraightLine->at(ss.first) : mP1Helix->at(ss.first);
   mP2AtDcaToP1 = (useStraightLine) ? mP2StraightLine->at(ss.second) : mP2Helix->at(ss.second);

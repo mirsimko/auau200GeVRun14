@@ -9,7 +9,7 @@
  *  line approximation of the tracks are kept for later use for the StHFTriplet
  * **************************************************
  *
- *  Initial Authors: 
+ *  Author: 
  *        **  Miroslav Simko
  *
  *  ** Code Maintainer 
@@ -30,8 +30,8 @@ public:
   StHFClosePair();
   StHFClosePair(StHFClosePair const &);
   StHFClosePair(StPicoTrack const * particle1, StPicoTrack const * particle2, 
-		unsigned short p1Idx, unsigned short p2Idx,
 		float p1mass, float p2mass,
+		unsigned short p1Idx, unsigned short p2Idx,
 		StThreeVectorF const & vtx, float bField, bool useStraightLine = true);
 
   StHFClosePair & operator= (StHFClosePair const &rhs)

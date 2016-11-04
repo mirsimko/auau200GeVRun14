@@ -128,18 +128,26 @@ StHFTriplet::StHFTriplet(StPicoTrack const * const particle1, StPicoTrack const 
 }
 
 // _________________________________________________________
-StHFTriplet::StHFTriplet(StHFClosePair * pair, StPicoTrack const * particle3, 
+StHFTriplet::StHFTriplet(StHFClosePair * closePair, StPicoTrack const * particle3, 
 			float p3MassHypo,
 			unsigned short p3Idx,
 			StThreeVectorF const & vtx, float bField) :
   mLorentzVector(StLorentzVectorF()), mDecayVertex(StThreeVectorF()),
   mPointingAngle(std::numeric_limits<float>::quiet_NaN()), mDecayLength(std::numeric_limits<float>::quiet_NaN()),
-  mParticle1Dca(pair->particle1Dca()), mParticle2Dca(pair->particle2Dca()), mParticle3Dca(std::numeric_limits<float>::quiet_NaN()),
-  mParticle1Idx(pair->particle1Idx()), mParticle2Idx(pair->particle2Idx()), mParticle3Idx(p3Idx), 
-  mDcaDaughters12(pair->dcaDaughters()), mDcaDaughters23(std::numeric_limits<float>::max()), mDcaDaughters31(std::numeric_limits<float>::max())
+  mParticle1Dca(closePair->particle1Dca()), mParticle2Dca(closePair->particle2Dca()), mParticle3Dca(std::numeric_limits<float>::quiet_NaN()),
+  mParticle1Idx(closePair->particle1Idx()), mParticle2Idx(closePair->particle2Idx()), mParticle3Idx(p3Idx), 
+  mDcaDaughters12(closePair->dcaDaughters()), mDcaDaughters23(std::numeric_limits<float>::max()), mDcaDaughters31(std::numeric_limits<float>::max())
 {
+  if(!closePair)
+  {
+    cerr << "StHFTriplet::StHFTriplet(closePair* ..): closepair not found" << endl;
+    mParticle1Idx = std::numeric_limits<unsigned short>::max();
+    mParticle2Idx = std::numeric_limits<unsigned short>::max();
+    mParticle3Idx = std::numeric_limits<unsigned short>::max();
+    return;
+  }
   if (!particle3 || 
-      (pair->particle1Idx() == particle3->id() || pair->particle2Idx() == particle3->id())) {
+      (closePair->particle1Idx() == particle3->id() || closePair->particle2Idx() == particle3->id())) {
     mParticle1Idx = std::numeric_limits<unsigned short>::max();
     mParticle2Idx = std::numeric_limits<unsigned short>::max();
     mParticle3Idx = std::numeric_limits<unsigned short>::max();
@@ -151,12 +159,19 @@ StHFTriplet::StHFTriplet(StHFClosePair * pair, StPicoTrack const * particle3,
 
   StThreeVectorF const p3Mom = p3Helix.momentum(bField * kilogauss);
 
-  StPhysicalHelixD * p1StraightLine = pair->p1StraightLine();
-  StPhysicalHelixD * p2StraightLine = pair->p2StraightLine();
+  StPhysicalHelixD * p1StraightLine = closePair->p1StraightLine();
+  StPhysicalHelixD * p2StraightLine = closePair->p2StraightLine();
+
+  if (!p1StraightLine || !p2StraightLine)
+  {
+    cerr << "StHFTriplet::StHFTriplet(closePair* ...): Straightlines not found in StHFClosePair" << endl;
+    throw;
+  }
+
   StPhysicalHelixD const p3StraightLine(p3Mom, p3Helix.origin(), 0, particle3->charge());
 
-  StThreeVectorF p1AtDcaToP2 = pair->p1AtDcaToP2();
-  StThreeVectorF p2AtDcaToP1 = pair->p2AtDcaToP1();
+  StThreeVectorF p1AtDcaToP2 = closePair->p1AtDcaToP2();
+  StThreeVectorF p2AtDcaToP1 = closePair->p2AtDcaToP1();
 
   std::pair<double, double> const ss23 = p2StraightLine->pathLengths(p3StraightLine);
   StThreeVectorF const p2AtDcaToP3 = p2StraightLine->at(ss23.first);
@@ -176,17 +191,23 @@ StHFTriplet::StHFTriplet(StHFClosePair * pair, StPicoTrack const * particle3,
   StThreeVectorF mDecayVertex = ( p1AtDcaToP2 + p2AtDcaToP1 + p2AtDcaToP3 + p3AtDcaToP2 + p3AtDcaToP1 + p1AtDcaToP3 ) / 6.0;
 
   // -- constructing mother daughter four momentum. Need helix (not straight line) for each daughter
-  double const p1AtV0 = pair->p1Helix()->pathLength( mDecayVertex );
-  StThreeVectorF const p1MomAtDca = pair->p1Helix()->momentumAt(p1AtV0 ,  bField * kilogauss);
+  if (!closePair->p1Helix() || !closePair->p2Helix())
+  {
+    cerr << "StHFTriplet::StHFTriplet(closePair* ...): Helices not found in StHFClosePair" << endl;
+    throw;
+  }
 
-  double const p2AtV0 = pair->p2Helix()->pathLength( mDecayVertex );
-  StThreeVectorF const p2MomAtDca = pair->p2Helix()->momentumAt(p2AtV0 ,  bField * kilogauss);
+  double const p1AtV0 = closePair->p1Helix()->pathLength( mDecayVertex );
+  StThreeVectorF const p1MomAtDca = closePair->p1Helix()->momentumAt(p1AtV0 ,  bField * kilogauss);
+
+  double const p2AtV0 = closePair->p2Helix()->pathLength( mDecayVertex );
+  StThreeVectorF const p2MomAtDca = closePair->p2Helix()->momentumAt(p2AtV0 ,  bField * kilogauss);
   
   double const p3AtV0 = p3Helix.pathLength( mDecayVertex );
   StThreeVectorF const p3MomAtDca = p3Helix.momentumAt(p3AtV0 ,  bField * kilogauss);
   
-  StLorentzVectorF const p1FourMom(p1MomAtDca, p1MomAtDca.massHypothesis(pair->p1massHypothesis()));
-  StLorentzVectorF const p2FourMom(p2MomAtDca, p2MomAtDca.massHypothesis(pair->p2massHypothesis()));
+  StLorentzVectorF const p1FourMom(p1MomAtDca, p1MomAtDca.massHypothesis(closePair->p1massHypothesis()));
+  StLorentzVectorF const p2FourMom(p2MomAtDca, p2MomAtDca.massHypothesis(closePair->p2massHypothesis()));
   StLorentzVectorF const p3FourMom(p3MomAtDca, p3MomAtDca.massHypothesis(p3MassHypo));
   
   mLorentzVector = p1FourMom + p2FourMom + p3FourMom;
