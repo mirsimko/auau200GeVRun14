@@ -102,20 +102,28 @@ bool StHFCuts::isGoodTertiaryVertexPair(StHFPair const & pair) const {
 // _________________________________________________________
 bool StHFCuts::isGoodSecondaryVertexTriplet(StHFTriplet const & triplet) const {
   // -- check for good secondary vertex triplet
-  // float dcaDaughters = triplet.dcaDaughters12() > triplet.dcaDaughters23() ? triplet.dcaDaughters12() : triplet.dcaDaughters23();
-  // dcaDaughters = dcaDaughters > triplet.dcaDaughters31() ? dcaDaughters : triplet.dcaDaughters31();
-  // cout << triplet.m() << endl;
-  // cout << std::cos(triplet.pointingAngle()) << endl;
-  // cout << triplet.decayLength()             << endl;
-  // cout << dcaDaughters << endl;
-  // cout << fabs(std::sin(triplet.pointingAngle())*triplet.decayLength()) << endl;
-  // cout << "+++++++++++++++++++++++++++++++++++++++" << endl;
 
-  return ( triplet.m() > mSecondaryTripletMassMin && triplet.m() < mSecondaryTripletMassMax &&
+  bool isGood =  ( triplet.m() > mSecondaryTripletMassMin && triplet.m() < mSecondaryTripletMassMax &&
 	   std::cos(triplet.pointingAngle()) > mSecondaryTripletCosThetaMin &&
 	   triplet.decayLength() > mSecondaryTripletDecayLengthMin && triplet.decayLength() < mSecondaryTripletDecayLengthMax &&
 	   triplet.dcaDaughters12() < mSecondaryTripletDcaDaughters12Max &&
 	   triplet.dcaDaughters23() < mSecondaryTripletDcaDaughters23Max &&
 	   triplet.dcaDaughters31() < mSecondaryTripletDcaDaughters31Max &&
 	   fabs(std::sin(triplet.pointingAngle())*triplet.decayLength()) < mSecondaryTripletDcaToPvMax);
+
+  // if(isGood)
+  // {
+    // float dcaDaughters = triplet.dcaDaughters12() > triplet.dcaDaughters23() ? triplet.dcaDaughters12() : triplet.dcaDaughters23();
+    // dcaDaughters = dcaDaughters > triplet.dcaDaughters31() ? dcaDaughters : triplet.dcaDaughters31();
+    // cout << triplet.m() << endl;
+    // cout << std::cos(triplet.pointingAngle()) << endl;
+    // cout << triplet.particle3Dca() << endl;
+    // cout << triplet.particle1Dca() << endl;
+    // cout << triplet.particle2Dca() << endl;
+    // cout << triplet.decayLength()             << endl;
+    // cout << dcaDaughters << endl;
+    // cout << fabs(std::sin(triplet.pointingAngle())*triplet.decayLength()) << endl;
+    // cout << "+++++++++++++++++++++++++++++++++++++++" << endl;
+  // }
+  return isGood;
 }

@@ -74,6 +74,7 @@ class StHFTriplet : public TObject
  private:
   StHFTriplet(StHFTriplet const &);
   StHFTriplet& operator=(StHFTriplet const &);
+ protected:
   StLorentzVectorF mLorentzVector; 
   StThreeVectorF   mDecayVertex; 
 
@@ -117,5 +118,5 @@ inline StThreeVectorF const & StHFTriplet::decayVertex() const { return mDecayVe
 inline float StHFTriplet::v0x() const { return mDecayVertex.x();}
 inline float StHFTriplet::v0y() const { return mDecayVertex.y();}
 inline float StHFTriplet::v0z() const { return mDecayVertex.z();}
-inline float StHFTriplet::DcaToPrimaryVertex() const {return mDecayLength*std::sin(mPointingAngle);}
+inline float StHFTriplet::DcaToPrimaryVertex() const {return mDecayLength*sin(mPointingAngle);}
 #endif

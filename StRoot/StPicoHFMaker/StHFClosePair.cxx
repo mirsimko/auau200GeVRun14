@@ -9,24 +9,34 @@
 #include "StarClassLibrary/SystemOfUnits.h"
 #include "StPicoDstMaker/StPicoTrack.h"
 
-using namespace std;
 ClassImp(StHFClosePair)
 
 // _________________________________________________________
 StHFClosePair::StHFClosePair() :
-  mParticle1Dca(std::numeric_limits<float>::quiet_NaN()), mParticle2Dca(std::numeric_limits<float>::quiet_NaN()), 
+  mParticle1Dca(std::numeric_limits<float>::quiet_NaN()), 
+  mParticle2Dca(std::numeric_limits<float>::quiet_NaN()), 
   mDcaDaughters(std::numeric_limits<float>::max()), 
-  mParticle1Idx(std::numeric_limits<unsigned short>::max()), mParticle2Idx(std::numeric_limits<unsigned short>::max()), 
-  mMassHypothesis1(std::numeric_limits<float>::quiet_NaN()), mMassHypothesis2(std::numeric_limits<float>::quiet_NaN()),
-  mP1StraightLine(NULL), mP2StraightLine(NULL), mP1Helix(NULL), mP2Helix(NULL)
+  mParticle1Idx(std::numeric_limits<unsigned short>::max()), 
+  mParticle2Idx(std::numeric_limits<unsigned short>::max()), 
+  mMassHypothesis1(std::numeric_limits<float>::quiet_NaN()), 
+  mMassHypothesis2(std::numeric_limits<float>::quiet_NaN()),
+  mP1StraightLine(NULL), 
+  mP2StraightLine(NULL), 
+  mP1Helix(NULL), 
+  mP2Helix(NULL)
 {}
 
 // _________________________________________________________
 StHFClosePair::StHFClosePair(StHFClosePair const &rhs) :
-  mParticle1Dca(rhs.mParticle1Dca), mParticle2Dca(rhs.mParticle2Dca),
-  mDcaDaughters(rhs.mDcaDaughters), mParticle1Idx(rhs.mParticle1Idx), mParticle2Idx(rhs.mParticle2Idx),
-  mMassHypothesis1(rhs.mMassHypothesis1), mMassHypothesis2(rhs.mMassHypothesis2),
-  mP1AtDcaToP2(rhs.mP1AtDcaToP2), mP2AtDcaToP1(rhs.mP2AtDcaToP1)
+  mParticle1Dca(rhs.mParticle1Dca), 
+  mParticle2Dca(rhs.mParticle2Dca),
+  mDcaDaughters(rhs.mDcaDaughters), 
+  mParticle1Idx(rhs.mParticle1Idx), 
+  mParticle2Idx(rhs.mParticle2Idx),
+  mMassHypothesis1(rhs.mMassHypothesis1), 
+  mMassHypothesis2(rhs.mMassHypothesis2),
+  mP1AtDcaToP2(rhs.mP1AtDcaToP2), 
+  mP2AtDcaToP1(rhs.mP2AtDcaToP1)
 {
   mP1StraightLine = new StPhysicalHelixD(*(rhs.mP1StraightLine)); // do a deep copy of the pointees
   mP2StraightLine = new StPhysicalHelixD(*(rhs.mP2StraightLine));
@@ -48,11 +58,17 @@ StHFClosePair::StHFClosePair(StPicoTrack const * particle1, StPicoTrack const * 
 			     float p1mass, float p2mass,
 			     unsigned short p1Idx, unsigned short p2Idx,
 			     StThreeVectorF const & vtx, float bField, bool useStraightLine) :
-  mParticle1Dca(std::numeric_limits<float>::quiet_NaN()), mParticle2Dca(std::numeric_limits<float>::quiet_NaN()), 
+  mParticle1Dca(std::numeric_limits<float>::quiet_NaN()), 
+  mParticle2Dca(std::numeric_limits<float>::quiet_NaN()), 
   mDcaDaughters(std::numeric_limits<float>::max()), 
-  mMassHypothesis1(p1mass), mMassHypothesis2(p2mass),
-  mParticle1Idx(p1Idx), mParticle2Idx(p2Idx),
-  mP1StraightLine(NULL), mP2StraightLine(NULL), mP1Helix(NULL), mP2Helix(NULL)
+  mMassHypothesis1(p1mass), 
+  mMassHypothesis2(p2mass),
+  mParticle1Idx(p1Idx), 
+  mParticle2Idx(p2Idx),
+  mP1StraightLine(NULL), 
+  mP2StraightLine(NULL), 
+  mP1Helix(NULL), 
+  mP2Helix(NULL)
 {
   // see if the particles are the same
   if(!particle1 || !particle2 || mParticle1Idx == mParticle2Idx ||  particle1->id() == particle2->id()) {

@@ -43,7 +43,7 @@ class StPicoCutsBase : public TNamed
   
   StPicoCutsBase();
   StPicoCutsBase(const Char_t *name);
-  ~StPicoCutsBase();
+  virtual ~StPicoCutsBase();
   
   void initBase();
 
