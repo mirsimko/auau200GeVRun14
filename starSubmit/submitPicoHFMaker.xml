@@ -21,6 +21,9 @@
 
     if ("&mMode;" == "1") then
          &basePath;/jobs/&prodId;/starSubmit/parseFileList.csh ${FILELIST} &basePath; &prodId; &mMode; &treeName; ${JOBID} &rootMacro; picoList_badRuns.list &productionBasePath; &decayChannel; &starVersion;
+    else if ("&mMode;" == "3") then
+        root -q -b -l StRoot/macros/loadSharedHFLibraries.C StRoot/macros/&rootMacro;++\(\"$FILELIST\",\"&prodId;_$JOBINDEX\",\"picoList_badRuns.list\"\) &gt;&amp; ${JOBID}.log
+        tar -zcvf ${JOBID}.log.tgz ${JOBID}.log
     else
         root -q -b -l StRoot/macros/loadSharedHFLibraries.C StRoot/macros/&rootMacro;++\(\"$FILELIST\",\"&prodId;_$JOBINDEX\",&mMode;,\"picoList_badRuns.list\",\"&treeName;\",\"&productionBasePath;\",&decayChannel;\) &gt;&amp; ${JOBID}.log
         tar -zcvf ${JOBID}.log.tgz ${JOBID}.log
