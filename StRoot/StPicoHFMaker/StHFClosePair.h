@@ -57,7 +57,7 @@ public:
   StPhysicalHelixD * p1Helix();
   StPhysicalHelixD * p2Helix();
 
-private:
+protected: // declared protected so that wrapper classes can change these
   float mParticle1Dca;
   float mParticle2Dca;
   float mDcaDaughters;
@@ -74,6 +74,7 @@ private:
   StPhysicalHelixD * mP1Helix ;
   StPhysicalHelixD * mP2Helix ;
 
+private:
   ClassDef(StHFClosePair, 2)
 };
 
