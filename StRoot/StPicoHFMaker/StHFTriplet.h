@@ -71,10 +71,14 @@ class StHFTriplet : public TObject
   float pz() const;
   float DcaToPrimaryVertex() const;
 
+ protected:
+  void calculateTopology(StHFClosePair * pair, StPhysicalHelixD  & p3Helix, 
+			 float p3MassHypo, float p3Charge,
+			 unsigned short p3Idx,
+			 StThreeVectorF const & vtx, float bField);
  private:
   StHFTriplet(StHFTriplet const &);
   StHFTriplet& operator=(StHFTriplet const &);
- protected:
   StLorentzVectorF mLorentzVector; 
   StThreeVectorF   mDecayVertex; 
 

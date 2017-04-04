@@ -132,11 +132,19 @@ StHFTriplet::StHFTriplet(StHFClosePair * closePair, StPicoTrack const * particle
 			float p3MassHypo,
 			unsigned short p3Idx,
 			StThreeVectorF const & vtx, float bField) :
-  mLorentzVector(StLorentzVectorF()), mDecayVertex(StThreeVectorF()),
-  mPointingAngle(std::numeric_limits<float>::quiet_NaN()), mDecayLength(std::numeric_limits<float>::quiet_NaN()),
-  mParticle1Dca(closePair->particle1Dca()), mParticle2Dca(closePair->particle2Dca()), mParticle3Dca(std::numeric_limits<float>::quiet_NaN()),
-  mParticle1Idx(closePair->particle1Idx()), mParticle2Idx(closePair->particle2Idx()), mParticle3Idx(p3Idx), 
-  mDcaDaughters12(closePair->dcaDaughters()), mDcaDaughters23(std::numeric_limits<float>::max()), mDcaDaughters31(std::numeric_limits<float>::max())
+  mLorentzVector(StLorentzVectorF()), 
+  mDecayVertex(StThreeVectorF()),
+  mPointingAngle(std::numeric_limits<float>::quiet_NaN()), 
+  mDecayLength(std::numeric_limits<float>::quiet_NaN()),
+  mParticle1Dca(closePair->particle1Dca()), 
+  mParticle2Dca(closePair->particle2Dca()), 
+  mParticle3Dca(std::numeric_limits<float>::quiet_NaN()),
+  mParticle1Idx(closePair->particle1Idx()), 
+  mParticle2Idx(closePair->particle2Idx()), 
+  mParticle3Idx(p3Idx), 
+  mDcaDaughters12(closePair->dcaDaughters()), 
+  mDcaDaughters23(std::numeric_limits<float>::max()), 
+  mDcaDaughters31(std::numeric_limits<float>::max())
 {
   if(!closePair)
   {
@@ -155,6 +163,24 @@ StHFTriplet::StHFTriplet(StHFClosePair * closePair, StPicoTrack const * particle
   }
 
   StPhysicalHelixD p3Helix = particle3->dcaGeometry().helix();
+
+  calculateTopology(pair, p3Helix, p3MassHypo, particle3->charge(), p3Idx, vtx, bField);
+}
+
+
+// _________________________________________________________
+void StHFTriplet::calculateTopology(StHFClosePair * pair, StPhysicalHelixD & p3Helix, 
+				    float p3MassHypo, float p3Charge,
+				    unsigned short p3Idx,
+				    StThreeVectorF const & vtx, float bField) :
+
+  mParticle1Dca(closePair->particle1Dca()), 
+  mParticle2Dca(closePair->particle2Dca()), 
+  mParticle1Idx(closePair->particle1Idx()), 
+  mParticle2Idx(closePair->particle2Idx()), 
+  mParticle3Idx(p3Idx), 
+  mDcaDaughters12(closePair->dcaDaughters())
+{
   p3Helix.moveOrigin(p3Helix.pathLength(vtx));
 
   StThreeVectorF const p3Mom = p3Helix.momentum(bField * kilogauss);
@@ -168,7 +194,7 @@ StHFTriplet::StHFTriplet(StHFClosePair * closePair, StPicoTrack const * particle
     throw;
   }
 
-  StPhysicalHelixD const p3StraightLine(p3Mom, p3Helix.origin(), 0, particle3->charge());
+  StPhysicalHelixD const p3StraightLine(p3Mom, p3Helix.origin(), 0, p3Charge);
 
   StThreeVectorF p1AtDcaToP2 = closePair->p1AtDcaToP2();
   StThreeVectorF p2AtDcaToP1 = closePair->p2AtDcaToP1();
@@ -216,4 +242,5 @@ StHFTriplet::StHFTriplet(StHFClosePair * closePair, StPicoTrack const * particle
   StThreeVectorF const vtxToV0 = mDecayVertex - vtx;
   mPointingAngle = vtxToV0.angle(mLorentzVector.vect());
   mDecayLength = vtxToV0.mag();
+
 }

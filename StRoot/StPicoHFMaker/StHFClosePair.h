@@ -58,6 +58,14 @@ public:
   StPhysicalHelixD * p2Helix();
 
 protected: // declared protected so that wrapper classes can change these
+  void calculateTopology(StPhysicalHelixD *p1Helix, StPhysicalHelixD *p2Helix, 
+			 float p1mass, float p2mass,
+			 unsigned short p1Idx, unsigned short p2Idx,
+			 StThreeVectorF const & vtx, float bField, bool useStraightLine = true);
+private:
+  StPhysicalHelixD * mP1Helix ;
+  StPhysicalHelixD * mP2Helix ;
+
   float mParticle1Dca;
   float mParticle2Dca;
   float mDcaDaughters;
@@ -71,10 +79,7 @@ protected: // declared protected so that wrapper classes can change these
   StThreeVectorF mP2AtDcaToP1;
   StPhysicalHelixD * mP1StraightLine;
   StPhysicalHelixD * mP2StraightLine;
-  StPhysicalHelixD * mP1Helix ;
-  StPhysicalHelixD * mP2Helix ;
 
-private:
   ClassDef(StHFClosePair, 2)
 };
 

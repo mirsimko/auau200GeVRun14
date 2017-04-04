@@ -13,6 +13,8 @@ ClassImp(StHFClosePair)
 
 // _________________________________________________________
 StHFClosePair::StHFClosePair() :
+  mP1Helix(NULL), 
+  mP2Helix(NULL),
   mParticle1Dca(std::numeric_limits<float>::quiet_NaN()), 
   mParticle2Dca(std::numeric_limits<float>::quiet_NaN()), 
   mDcaDaughters(std::numeric_limits<float>::max()), 
@@ -21,9 +23,7 @@ StHFClosePair::StHFClosePair() :
   mMassHypothesis1(std::numeric_limits<float>::quiet_NaN()), 
   mMassHypothesis2(std::numeric_limits<float>::quiet_NaN()),
   mP1StraightLine(NULL), 
-  mP2StraightLine(NULL), 
-  mP1Helix(NULL), 
-  mP2Helix(NULL)
+  mP2StraightLine(NULL) 
 {}
 
 // _________________________________________________________
@@ -58,6 +58,8 @@ StHFClosePair::StHFClosePair(StPicoTrack const * particle1, StPicoTrack const * 
 			     float p1mass, float p2mass,
 			     unsigned short p1Idx, unsigned short p2Idx,
 			     StThreeVectorF const & vtx, float bField, bool useStraightLine) :
+  mP1Helix(NULL), 
+  mP2Helix(NULL),
   mParticle1Dca(std::numeric_limits<float>::quiet_NaN()), 
   mParticle2Dca(std::numeric_limits<float>::quiet_NaN()), 
   mDcaDaughters(std::numeric_limits<float>::max()), 
@@ -66,9 +68,7 @@ StHFClosePair::StHFClosePair(StPicoTrack const * particle1, StPicoTrack const * 
   mParticle1Idx(p1Idx), 
   mParticle2Idx(p2Idx),
   mP1StraightLine(NULL), 
-  mP2StraightLine(NULL), 
-  mP1Helix(NULL), 
-  mP2Helix(NULL)
+  mP2StraightLine(NULL)
 {
   // see if the particles are the same
   if(!particle1 || !particle2 || mParticle1Idx == mParticle2Idx ||  particle1->id() == particle2->id()) {
@@ -81,7 +81,29 @@ StHFClosePair::StHFClosePair(StPicoTrack const * particle1, StPicoTrack const * 
   mP2Helix = new StPhysicalHelixD( particle2->dcaGeometry().helix());
   if (!mP1Helix || !mP2Helix)
   {
-    cerr << "StHFClosePair::StHFClosePair(...): Helixes not initiated" << endl;
+    cerr << "StHFClosePair::StHFClosePair(...): Helices not initiated" << endl;
+    mParticle1Idx = std::numeric_limits<unsigned short>::max();
+    mParticle2Idx = std::numeric_limits<unsigned short>::max();
+    return;
+  }
+  calculateTopology(mP1Helix, mP2Helix, p1mass, p2mass, p1Idx, p2Idx, vtx, useStraightLine);
+}
+
+// _________________________________________________________
+void StHFClosePair::calculateTopology(StPhysicalHelixD *p1Helix, StPhysicalHelixD *p2Helix, 
+				      float p1mass, float p2mass,
+				      unsigned short p1Idx, unsigned short p2Idx,
+				      StThreeVectorF const & vtx, float bField, bool useStraightLine = true):
+  mP1Helix(p1Helix), 
+  mP2Helix(p2Helix),
+  mMassHypothesis1(p1mass), 
+  mMassHypothesis2(p2mass),
+  mParticle1Idx(p1Idx), 
+  mParticle2Idx(p2Idx)
+{
+  if (!mP1Helix || !mP2Helix)
+  {
+    cerr << "StHFClosePair::calculateTopology(...): Helices not found" << endl;
     mParticle1Idx = std::numeric_limits<unsigned short>::max();
     mParticle2Idx = std::numeric_limits<unsigned short>::max();
     return;
@@ -114,5 +136,3 @@ StHFClosePair::StHFClosePair(StPicoTrack const * particle1, StPicoTrack const * 
   mParticle1Dca = (mP1Helix->origin() - vtx).mag();
   mParticle2Dca = (mP2Helix->origin() - vtx).mag();
 }
-
-// _________________________________________________________
