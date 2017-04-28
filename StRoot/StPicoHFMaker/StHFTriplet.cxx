@@ -164,23 +164,24 @@ StHFTriplet::StHFTriplet(StHFClosePair * closePair, StPicoTrack const * particle
 
   StPhysicalHelixD p3Helix = particle3->dcaGeometry().helix();
 
-  calculateTopology(pair, p3Helix, p3MassHypo, particle3->charge(), p3Idx, vtx, bField);
+  calculateTopology(closePair, p3Helix, p3MassHypo, particle3->charge(), p3Idx, vtx, bField);
 }
 
 
 // _________________________________________________________
-void StHFTriplet::calculateTopology(StHFClosePair * pair, StPhysicalHelixD & p3Helix, 
+void StHFTriplet::calculateTopology(StHFClosePair * closePair, StPhysicalHelixD & p3Helix, 
 				    float p3MassHypo, float p3Charge,
 				    unsigned short p3Idx,
-				    StThreeVectorF const & vtx, float bField) :
-
-  mParticle1Dca(closePair->particle1Dca()), 
-  mParticle2Dca(closePair->particle2Dca()), 
-  mParticle1Idx(closePair->particle1Idx()), 
-  mParticle2Idx(closePair->particle2Idx()), 
-  mParticle3Idx(p3Idx), 
-  mDcaDaughters12(closePair->dcaDaughters())
+				    StThreeVectorF const & vtx, float bField)
 {
+
+  mParticle1Dca = closePair->particle1Dca();
+  mParticle2Dca = closePair->particle2Dca();
+  mParticle1Idx = closePair->particle1Idx();
+  mParticle2Idx = closePair->particle2Idx();
+  mParticle3Idx = p3Idx;
+  mDcaDaughters12 = closePair->dcaDaughters();
+
   p3Helix.moveOrigin(p3Helix.pathLength(vtx));
 
   StThreeVectorF const p3Mom = p3Helix.momentum(bField * kilogauss);

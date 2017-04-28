@@ -26,6 +26,7 @@
 
 #include "StarClassLibrary/StLorentzVectorF.hh"
 #include "StarClassLibrary/StThreeVectorF.hh"
+#include "StarClassLibrary/StPhysicalHelixD.hh"
 
 class StPicoTrack;
 class StPicoEvent;
@@ -35,7 +36,7 @@ class StHFTriplet : public TObject
 {
  public:
   StHFTriplet();
-  StHFTriplet(StHFTriplet const *);
+  explicit StHFTriplet(StHFTriplet const *);
   StHFTriplet(StPicoTrack const * particle1, StPicoTrack const * particle2, StPicoTrack const * particle3, 
 	     float p1MassHypo, float p2MassHypo, float p3MassHypo,
 	     unsigned short p1Idx, unsigned short p2Idx, unsigned short p3Idx,

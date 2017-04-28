@@ -28,6 +28,8 @@ StHFClosePair::StHFClosePair() :
 
 // _________________________________________________________
 StHFClosePair::StHFClosePair(StHFClosePair const &rhs) :
+  mP1Helix(NULL), 
+  mP2Helix(NULL),
   mParticle1Dca(rhs.mParticle1Dca), 
   mParticle2Dca(rhs.mParticle2Dca),
   mDcaDaughters(rhs.mDcaDaughters), 
@@ -36,7 +38,9 @@ StHFClosePair::StHFClosePair(StHFClosePair const &rhs) :
   mMassHypothesis1(rhs.mMassHypothesis1), 
   mMassHypothesis2(rhs.mMassHypothesis2),
   mP1AtDcaToP2(rhs.mP1AtDcaToP2), 
-  mP2AtDcaToP1(rhs.mP2AtDcaToP1)
+  mP2AtDcaToP1(rhs.mP2AtDcaToP1),
+  mP1StraightLine(NULL), 
+  mP2StraightLine(NULL) 
 {
   mP1StraightLine = new StPhysicalHelixD(*(rhs.mP1StraightLine)); // do a deep copy of the pointees
   mP2StraightLine = new StPhysicalHelixD(*(rhs.mP2StraightLine));
@@ -63,10 +67,10 @@ StHFClosePair::StHFClosePair(StPicoTrack const * particle1, StPicoTrack const * 
   mParticle1Dca(std::numeric_limits<float>::quiet_NaN()), 
   mParticle2Dca(std::numeric_limits<float>::quiet_NaN()), 
   mDcaDaughters(std::numeric_limits<float>::max()), 
-  mMassHypothesis1(p1mass), 
-  mMassHypothesis2(p2mass),
   mParticle1Idx(p1Idx), 
   mParticle2Idx(p2Idx),
+  mMassHypothesis1(p1mass), 
+  mMassHypothesis2(p2mass),
   mP1StraightLine(NULL), 
   mP2StraightLine(NULL)
 {
@@ -77,8 +81,8 @@ StHFClosePair::StHFClosePair(StPicoTrack const * particle1, StPicoTrack const * 
     return;
   }
 
-  mP1Helix = new StPhysicalHelixD( particle1->dcaGeometry().helix());
-  mP2Helix = new StPhysicalHelixD( particle2->dcaGeometry().helix());
+  mP1Helix = new StPhysicalHelixD( particle1->dcaGeometry().helix() );
+  mP2Helix = new StPhysicalHelixD( particle2->dcaGeometry().helix() );
   if (!mP1Helix || !mP2Helix)
   {
     cerr << "StHFClosePair::StHFClosePair(...): Helices not initiated" << endl;
@@ -86,21 +90,23 @@ StHFClosePair::StHFClosePair(StPicoTrack const * particle1, StPicoTrack const * 
     mParticle2Idx = std::numeric_limits<unsigned short>::max();
     return;
   }
-  calculateTopology(mP1Helix, mP2Helix, p1mass, p2mass, p1Idx, p2Idx, vtx, useStraightLine);
+  calculateTopology(mP1Helix, mP2Helix, p1mass, p2mass, particle1->charge(), particle2->charge(), p1Idx, p2Idx, vtx, useStraightLine);
 }
 
 // _________________________________________________________
 void StHFClosePair::calculateTopology(StPhysicalHelixD *p1Helix, StPhysicalHelixD *p2Helix, 
 				      float p1mass, float p2mass,
+				      float p1Charge, float p2Charge,
 				      unsigned short p1Idx, unsigned short p2Idx,
-				      StThreeVectorF const & vtx, float bField, bool useStraightLine = true):
-  mP1Helix(p1Helix), 
-  mP2Helix(p2Helix),
-  mMassHypothesis1(p1mass), 
-  mMassHypothesis2(p2mass),
-  mParticle1Idx(p1Idx), 
-  mParticle2Idx(p2Idx)
+				      StThreeVectorF const & vtx, float bField, bool useStraightLine)
 {
+  mP1Helix = p1Helix;
+  mP2Helix = p2Helix;
+  mMassHypothesis1 = p1mass;
+  mMassHypothesis2 = p2mass;
+  mParticle1Idx = p1Idx;
+  mParticle2Idx = p2Idx;
+
   if (!mP1Helix || !mP2Helix)
   {
     cerr << "StHFClosePair::calculateTopology(...): Helices not found" << endl;
@@ -115,8 +121,8 @@ void StHFClosePair::calculateTopology(StPhysicalHelixD *p1Helix, StPhysicalHelix
   // -- use straight lines approximation to get point of DCA of particle1-particle2 pair
   StThreeVectorF const p1Mom = mP1Helix->momentum(bField * kilogauss);
   StThreeVectorF const p2Mom = mP2Helix->momentum(bField * kilogauss);
-  mP1StraightLine = new StPhysicalHelixD(p1Mom, mP1Helix->origin(), 0, particle1->charge());
-  mP2StraightLine = new StPhysicalHelixD(p2Mom, mP2Helix->origin(), 0, particle2->charge());
+  mP1StraightLine = new StPhysicalHelixD(p1Mom, mP1Helix->origin(), 0, p1Charge);
+  mP2StraightLine = new StPhysicalHelixD(p2Mom, mP2Helix->origin(), 0, p2Charge);
 
   if(!mP1StraightLine || !mP2StraightLine)
   {

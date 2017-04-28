@@ -60,6 +60,7 @@ public:
 protected: // declared protected so that wrapper classes can change these
   void calculateTopology(StPhysicalHelixD *p1Helix, StPhysicalHelixD *p2Helix, 
 			 float p1mass, float p2mass,
+			 float p1Charge, float p2Charge,
 			 unsigned short p1Idx, unsigned short p2Idx,
 			 StThreeVectorF const & vtx, float bField, bool useStraightLine = true);
 private:
