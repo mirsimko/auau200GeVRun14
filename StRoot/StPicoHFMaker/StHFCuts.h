@@ -68,6 +68,8 @@ class StHFCuts : public StPicoCutsBase
 
   void setCutSecondaryTripletDcaToPvMax(float dcaToPvMax) { mSecondaryTripletDcaToPvMax = dcaToPvMax; }
 
+  void setCutSecondaryTripletPtMin(float ptMin) { mSecondaryTripletPtMin = ptMin; }
+
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
   // -- GETTER for single CUTS
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
@@ -97,6 +99,7 @@ class StHFCuts : public StPicoCutsBase
   const float&    cutSecondaryTripletMassMin()            const;
   const float&    cutSecondaryTripletMassMax()            const;
   const float&    cutSecondaryTripletDcaToPvMax()         const;
+  const float&    cutSecondaryTripletPtMin()	          const;
 
  private:
   
@@ -137,6 +140,7 @@ class StHFCuts : public StPicoCutsBase
   float mSecondaryTripletMassMin;
   float mSecondaryTripletMassMax;
   float mSecondaryTripletDcaToPvMax;
+  float mSecondaryTripletPtMin;
 
   ClassDef(StHFCuts,1)
 };
@@ -196,4 +200,5 @@ inline const float&    StHFCuts::cutSecondaryTripletCosThetaMin()        const {
 inline const float&    StHFCuts::cutSecondaryTripletMassMin()            const { return mSecondaryTripletMassMin; }
 inline const float&    StHFCuts::cutSecondaryTripletMassMax()            const { return mSecondaryTripletMassMax; }
 inline const float&    StHFCuts::cutSecondaryTripletDcaToPvMax()         const { return mSecondaryTripletDcaToPvMax; }
+inline const float&    StHFCuts::cutSecondaryTripletPtMin()         const { return mSecondaryTripletPtMin; }
 #endif
