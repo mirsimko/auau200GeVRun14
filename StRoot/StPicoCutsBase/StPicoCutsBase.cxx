@@ -231,10 +231,7 @@ bool StPicoCutsBase::isGoodTrack(StPicoTrack const * const trk) const {
 // _________________________________________________________
 bool StPicoCutsBase::cutMinDcaToPrimVertex(StPicoTrack const * const trk, int pidFlag) const {
   // -- check on min dca for identified particle
-
-  StPhysicalHelixD helix = trk->dcaGeometry().helix();
-  helix.moveOrigin(helix.pathLength(mPrimVtx));
-  float dca = (mPrimVtx - helix.origin()).mag();
+  float dca = (mPrimVtx - trk->origin()).mag();
 
   return (dca >= mDcaMin[pidFlag]);
 }
