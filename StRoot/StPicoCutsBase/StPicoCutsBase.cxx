@@ -240,7 +240,7 @@ bool StPicoCutsBase::cutMinDcaToPrimVertex(StPicoTrack const * const trk, int pi
 bool StPicoCutsBase::cutMinDcaToPrimVertexTertiary(StPicoTrack const * const trk, int pidFlag) const {
   // -- check on min dca for identified particle - used for tertiary particles only
 
-  StPhysicalHelixD helix = trk->helix(bField);
+  StPhysicalHelixD helix = trk->helix(mBField);
   helix.moveOrigin(helix.pathLength(mPrimVtx));
   float dca = (mPrimVtx - helix.origin()).mag();
 
@@ -350,7 +350,7 @@ float StPicoCutsBase::getTofBetaBase(StPicoTrack const * const trk) const {
   beta = tofPid->btofBeta();
   if (beta < 1e-4) {
     StThreeVectorF const btofHitPos = tofPid->btofHitPos();
-    StPhysicalHelixD helix = trk->helix();
+    StPhysicalHelixD helix = trk->helix(mBField);
     float pathLength = tofPathLength(&mPrimVtx, &btofHitPos, helix.curvature());
     float tof = tofPid->btof();
     beta = (tof > 0) ? pathLength / (tof * (C_C_LIGHT / 1.e9)) : std::numeric_limits<float>::quiet_NaN();
@@ -367,7 +367,7 @@ float StPicoCutsBase::getTofBeta(StPicoTrack const * const trk) const {
   //      - secondarys from charm decays (as an approximation)
   //    -> apply DCA cut to primary vertex to make sure only primaries or secondary HF decays are used
 
-  StPhysicalHelixD helix = trk->helix();
+  StPhysicalHelixD helix = trk->helix(mBField);
   return ((helix.origin() - mPrimVtx).mag() < mPrimaryDCAtoVtxMax) ? getTofBetaBase(trk) : std::numeric_limits<float>::quiet_NaN();
 }
 
@@ -393,7 +393,7 @@ float StPicoCutsBase::getTofBeta(StPicoTrack const * const trk,
   mTOFCorr->setMotherTracks(secondaryMother);
   
   float tof = tofPid->btof();
-  StPhysicalHelixD helix = trk->helix();
+  StPhysicalHelixD helix = trk->helix(mBField);
   
   // -- correct beta
   mTOFCorr->correctBeta(helix, tof, beta);
@@ -429,7 +429,7 @@ float StPicoCutsBase::getTofBeta(StPicoTrack const * const trk,
   mTOFCorr->setMotherTracks(secondaryMother)(tertiaryMother);
   
   float tof = tofPid->btof();
-  StPhysicalHelixD helix = trk->helix();
+  StPhysicalHelixD helix = trk->helix(mBField);
   
   // -- correct beta
   mTOFCorr->correctBeta(helix, tof, beta);
