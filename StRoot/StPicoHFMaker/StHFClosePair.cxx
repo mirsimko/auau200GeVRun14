@@ -81,8 +81,8 @@ StHFClosePair::StHFClosePair(StPicoTrack const * particle1, StPicoTrack const * 
     return;
   }
 
-  mP1Helix = new StPhysicalHelixD( particle1->dcaGeometry().helix() );
-  mP2Helix = new StPhysicalHelixD( particle2->dcaGeometry().helix() );
+  mP1Helix = new StPhysicalHelixD( particle1->helix(bField) );
+  mP2Helix = new StPhysicalHelixD( particle2->helix(bField) );
   if (!mP1Helix || !mP2Helix)
   {
     cerr << "StHFClosePair::StHFClosePair(...): Helices not initiated" << endl;

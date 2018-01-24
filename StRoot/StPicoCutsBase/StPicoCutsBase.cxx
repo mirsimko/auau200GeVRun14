@@ -240,7 +240,7 @@ bool StPicoCutsBase::cutMinDcaToPrimVertex(StPicoTrack const * const trk, int pi
 bool StPicoCutsBase::cutMinDcaToPrimVertexTertiary(StPicoTrack const * const trk, int pidFlag) const {
   // -- check on min dca for identified particle - used for tertiary particles only
 
-  StPhysicalHelixD helix = trk->dcaGeometry().helix();
+  StPhysicalHelixD helix = trk->helix(bField);
   helix.moveOrigin(helix.pathLength(mPrimVtx));
   float dca = (mPrimVtx - helix.origin()).mag();
 
