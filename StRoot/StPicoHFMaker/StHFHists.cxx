@@ -4,33 +4,28 @@
 #include "TFile.h"
 #include "TString.h"
 #include "StPicoEvent/StPicoEvent.h"
-#include "StPicoPrescales/StPicoPrescales.h"
 #include "StPicoHFEvent.h"
 #include "StHFPair.h"
 #include "StHFTriplet.h"
 
 #include "StHFHists.h"
 
-class StPicoPrescales;
 ClassImp(StHFHists)
 
 
 StHFHists::StHFHists() : TNamed("StHFHists", "StHFHists"),
-  mEventList(NULL), mSecondaryPairList(NULL), mTertiaryPairList(NULL), mTripletList(NULL), mPrescales(NULL), mNRuns(0) {
+  mEventList(NULL), mSecondaryPairList(NULL), mTertiaryPairList(NULL), mTripletList(NULL), mNRuns(0) {
 }
 
 
 StHFHists::StHFHists(const char* name) : TNamed(name, name),
-  mEventList(NULL), mSecondaryPairList(NULL), mTertiaryPairList(NULL), mTripletList(NULL), mPrescales(NULL), mNRuns(0){
+  mEventList(NULL), mSecondaryPairList(NULL), mTertiaryPairList(NULL), mTripletList(NULL), mNRuns(0){
 }
 
 
 StHFHists::~StHFHists()
 {
 
-  if (mPrescales)
-    delete mPrescales;
-  mPrescales = NULL;
   // note that histograms are owned by mOutFile. They will be destructed 
   // when the file is closed.
 }
@@ -41,9 +36,6 @@ void StHFHists::init (TList * outList, unsigned int mode){
 
   // path to lists of triggers prescales
   // lists are obtained from http://www.star.bnl.gov/protected/common/common2014/trigger2014/plots_au200gev/
-  const char * prescalesFilesDirectoryName = "./run14AuAu200GeVPrescales";
-  mPrescales = new StPicoPrescales(prescalesFilesDirectoryName); // fix dir name
-  mNRuns = mPrescales->numberOfRuns();
    
 
   // -- event list
@@ -112,13 +104,7 @@ void StHFHists::init (TList * outList, unsigned int mode){
 //void StHFHists::fillEventHists(StPicoEvent const& picoEvent,StPicoHFEvent const & picoHFEvent,unsigned int const nHftTracks)
 void StHFHists::fillEventHists(StPicoEvent const& picoEvent,StPicoHFEvent const & picoHFEvent)
 {
-  int runIndex = mPrescales->runIndex(picoHFEvent.runId());
-  (static_cast<TH1F*>(mEventList->FindObject("mh1TotalEventsInRun")))->Fill(runIndex);
-  //(static_cast<TH1F*>(mEventList->FindObject("mh1TotalHftTracksInRun")))->Fill(runIndex,nHftTracks);
-  (static_cast<TH1F*>(mEventList->FindObject("mh1TotalGRefMultInRun")))->Fill(runIndex,picoEvent.grefMult());
-  (static_cast<TH1F*>(mEventList->FindObject("mh1TotalHFSecondaryVerticesInRun")))->Fill(runIndex,picoHFEvent.nHFSecondaryVertices());
-  (static_cast<TH1F*>(mEventList->FindObject("mh1TotalHFTertiaryVerticesInRun")))->Fill(runIndex,picoHFEvent.nHFTertiaryVertices());
-  (static_cast<TH2F*>(mEventList->FindObject("mh2NHFSecondaryVsNHFTertiary")))->Fill(picoHFEvent.nHFTertiaryVertices(),picoHFEvent.nHFSecondaryVertices());
+  // currently does not do anything
 }
 
 // fill general histograms for good events
