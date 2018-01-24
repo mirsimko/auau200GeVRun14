@@ -185,22 +185,12 @@ float StHFPair::decayLength(StThreeVectorF const & vtx2) const{
   return nDecayLength;
 }
 // _________________________________________________________
-float StHFPair::particle1Dca(StPicoTrack const * p1track, StThreeVectorF const & vtx2) const{
-  // -- Overloaded function recalculates daughter dca 2 updated vertex
-  StPhysicalHelixD p1Helix = p1track->dcaGeometry().helix();
-  // -- move origins of helices to the primary vertex origin
-  p1Helix.moveOrigin(p1Helix.pathLength(vtx2));
-  float const nParticle1Dca = (p1Helix.origin() - vtx2).mag();
-  return nParticle1Dca;
+float StHFPair::particle1Dca() const{
+  return mParticle1Dca;
 }
 // _________________________________________________________
-float StHFPair::particle2Dca(StPicoTrack const * p2track, StThreeVectorF const & vtx2) const{
-  // -- Overloaded function recalculates daughter dca 2 updated vertex
-  StPhysicalHelixD p2Helix = p2track->dcaGeometry().helix();
-  // -- move origins of helices to the primary vertex origin
-  p2Helix.moveOrigin(p2Helix.pathLength(vtx2));
-  float const nParticle2Dca = (p2Helix.origin() - vtx2).mag();
-  return nParticle2Dca;
+float StHFPair::particle2Dca() const{
+  return mParticle2Dca;
 }
 
 

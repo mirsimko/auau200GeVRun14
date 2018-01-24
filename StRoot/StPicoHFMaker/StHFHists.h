@@ -19,13 +19,11 @@
 
 #include "TNamed.h"
 #include "TList.h"
-#include "StPicoPrescales/StPicoPrescales.h"
 
 class TH1F;
 class TH2F;
 class TFile;
 class TString;
-class StPicoPrescales;
 
 class StPicoEvent;
 class StPicoHFEvent;
@@ -57,9 +55,6 @@ class StHFHists: public TNamed
   TList *mTertiaryPairList;
   TList *mTripletList;
 
-  // general event hists
-  StPicoPrescales* mPrescales;
- 
   int mNRuns;
 
  
