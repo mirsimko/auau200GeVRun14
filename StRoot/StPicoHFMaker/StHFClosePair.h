@@ -66,7 +66,6 @@ protected: // declared protected so that wrapper classes can change these
 private:
   StPhysicalHelixD * mP1Helix ;
   StPhysicalHelixD * mP2Helix ;
-
   float mParticle1Dca;
   float mParticle2Dca;
   float mDcaDaughters;
