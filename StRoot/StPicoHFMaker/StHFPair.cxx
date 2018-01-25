@@ -123,7 +123,7 @@ StHFPair::StHFPair(StPicoTrack const * const particle1, StHFPair const * const p
     return;
   }
 
-  StPhysicalHelixD p1Helix = particle1->dcaGeometry().helix();
+  StPhysicalHelixD p1Helix = particle1->helix(bField);
   StThreeVectorF const p2Mom(particle2->px(),particle2->py(),particle2->pz());
   StThreeVectorF const p2Origin(particle2->v0x(),particle2->v0y(),particle2->v0z());
   StPhysicalHelixD p2Helix(p2Mom,p2Origin,bField*kilogauss, p2Charge);
@@ -184,13 +184,3 @@ float StHFPair::decayLength(StThreeVectorF const & vtx2) const{
   float const nDecayLength = vtx2ToTertiary.mag();  
   return nDecayLength;
 }
-// _________________________________________________________
-float StHFPair::particle1Dca() const{
-  return mParticle1Dca;
-}
-// _________________________________________________________
-float StHFPair::particle2Dca() const{
-  return mParticle2Dca;
-}
-
-

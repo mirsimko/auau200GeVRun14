@@ -11,7 +11,6 @@
 #include "StPicoEvent/StPicoEvent.h"
 #include "StPicoEvent/StPicoTrack.h"
 #include "StPicoEvent/StPicoBTofPidTraits.h"
-#include "StPicoPrescales/StPicoPrescales.h"
 
 #include "StHFCuts.h"
 #include "StHFHists.h"
@@ -50,6 +49,7 @@ Int_t StPicoHFMaker::Init() {
   // -- Inhertited from StMaker 
   //    NOT TO BE OVERWRITTEN by daughter class
   //    daughter class should implement InitHF()
+  cout << "StPicoHFMaker::Init()" << endl;
 
   // -- check for cut class
   if (!mHFCuts)
