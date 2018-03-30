@@ -121,8 +121,8 @@ class StPicoCutsBase : public TNamed
   // -- pT and eta cuts (also already inside isTPCHadron)
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
 
-  inline bool isInsideEtaRange(StPicoTrack const * const trk, int pidFlag);
-  inline bool isInsidePtRange (StPicoTrack const * const trk, int pidFlag);
+  inline bool isInsideEtaRange(StPicoTrack const * const trk, int pidFlag) const;
+  inline bool isInsidePtRange (StPicoTrack const * const trk, int pidFlag) const;
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
   

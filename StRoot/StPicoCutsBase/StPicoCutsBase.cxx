@@ -448,13 +448,13 @@ float StPicoCutsBase::getTofBeta(StPicoTrack const * const trk,
 
 // _________________________________________________________
 
-inline bool StPicoCutsBase::isInsideEtaRange(StPicoTrack const * const trk, int pidFlag)
+inline bool StPicoCutsBase::isInsideEtaRange(StPicoTrack const * const trk, int pidFlag) const
 {
   return fabs(trk->gMom(mPrimVtx, mBField ).pseudoRapidity()) < mEtaMax[pidFlag] ;
 }
 
 // _________________________________________________________
-inline bool StPicoCutsBase::isInsidePtRange(StPicoTrack const * const trk, int pidFlag)
+inline bool StPicoCutsBase::isInsidePtRange(StPicoTrack const * const trk, int pidFlag) const
 {
   return trk->gPt() >= mPtRange[pidFlag][0] && trk->gPt() < mPtRange[pidFlag][1];
 }
