@@ -118,6 +118,13 @@ class StPicoCutsBase : public TNamed
   bool isHybridTOFProton(StPicoTrack const *trk, float const & tofBeta, StThreeVectorF const & vtx) const;
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
+  // -- pT and eta cuts (also already inside isTPCHadron)
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
+
+  bool isInsideEtaRange(StPicoTrack const * const trk, int pidFlag);
+  bool isInsidePtRange (StPicoTrack const * const trk, int pidFlag);
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
   
   const unsigned int&  eventStatMax()  const { return mEventStatMax; }
 

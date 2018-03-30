@@ -265,8 +265,8 @@ bool StPicoCutsBase::isTPCHadron(StPicoTrack const * const trk, int pidFlag) con
   else if (pidFlag == kProton)
     nSigma = fabs(trk->nSigmaProton());
 
-  return ( trk->gPt() >= mPtRange[pidFlag][0] && trk->gPt() < mPtRange[pidFlag][1] &&
-	   fabs(trk->gMom(mPrimVtx, mBField ).pseudoRapidity()) < mEtaMax[pidFlag] &&
+  return ( isInsidePtRange(trk, pidFlag) &&
+	   isInsideEtaRange(trk, pidFlag) &&
 	   nSigma < mTPCNSigmaMax[pidFlag] );
 }
 
@@ -446,3 +446,15 @@ float StPicoCutsBase::getTofBeta(StPicoTrack const * const trk,
   return beta;
 }
 
+// _________________________________________________________
+
+bool StPicoCutsBase::isInsideEtaRange(StPicoTrack const * const trk, int pidFlag)
+{
+  return fabs(trk->gMom(mPrimVtx, mBField ).pseudoRapidity()) < mEtaMax[pidFlag] ;
+}
+
+// _________________________________________________________
+bool StPicoCutsBase::isInsidePtRange(StPicoTrack const * const trk, int pidFlag)
+{
+  return trk->gPt() >= mPtRange[pidFlag][0] && trk->gPt() < mPtRange[pidFlag][1];
+}
