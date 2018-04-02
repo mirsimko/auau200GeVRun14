@@ -56,7 +56,7 @@ StHFTriplet::StHFTriplet(StPicoTrack const * const particle1, StPicoTrack const 
 
   StHFClosePair closePair(particle1, particle2, p1MassHypo, p2MassHypo, p1Idx, p2Idx, vtx, bField);
 
-  StPhysicalHelixD p3Helix = particle3->helix(bField);
+  StPhysicalHelixD p3Helix = particle3->dcaGeometry().helix();
 
   calculateTopology(&closePair, p3Helix, p3MassHypo, particle3->charge(), p3Idx, vtx, bField);
 }
