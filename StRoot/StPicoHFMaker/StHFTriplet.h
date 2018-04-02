@@ -49,28 +49,29 @@ class StHFTriplet : public TObject
 
   StLorentzVectorF const & lorentzVector() const;
   StThreeVectorF const & decayVertex() const;
-  float m()    const;
-  float pt()   const;
-  float eta()  const;
-  float phi()  const;
-  float pointingAngle() const;
-  float decayLength() const;
-  float particle1Dca() const;
-  float particle2Dca() const;
-  float particle3Dca() const;
-  unsigned short particle1Idx() const;
-  unsigned short particle2Idx() const;
-  unsigned short particle3Idx() const;
-  float dcaDaughters12() const;
-  float dcaDaughters23() const;
-  float dcaDaughters31() const;
-  float v0x() const;
-  float v0y() const;
-  float v0z() const;
-  float px() const;
-  float py() const;
-  float pz() const;
-  float DcaToPrimaryVertex() const;
+  inline float m()    const;
+  inline float pt()   const;
+  inline float eta()  const;
+  inline float phi()  const;
+  inline float pointingAngle() const;
+  inline float decayLength() const;
+  inline float particle1Dca() const;
+  inline float particle2Dca() const;
+  inline float particle3Dca() const;
+  inline unsigned short particle1Idx() const;
+  inline unsigned short particle2Idx() const;
+  inline unsigned short particle3Idx() const;
+  inline float dcaDaughters12() const;
+  inline float dcaDaughters23() const;
+  inline float dcaDaughters31() const;
+  inline float v0x() const;
+  inline float v0y() const;
+  inline float v0z() const;
+  inline float px() const;
+  inline float py() const;
+  inline float pz() const;
+  inline float DcaToPrimaryVertex() const;
+  inline float dV0Max() const;
 
  protected:
   void calculateTopology(StHFClosePair * pair, StPhysicalHelixD  & p3Helix, 
@@ -98,6 +99,8 @@ class StHFTriplet : public TObject
   float mDcaDaughters23;
   float mDcaDaughters31;
 
+  float mDV0Max;
+
   ClassDef(StHFTriplet,2)
 };
 inline StLorentzVectorF const & StHFTriplet::lorentzVector() const { return mLorentzVector;}
@@ -124,4 +127,5 @@ inline float StHFTriplet::v0x() const { return mDecayVertex.x();}
 inline float StHFTriplet::v0y() const { return mDecayVertex.y();}
 inline float StHFTriplet::v0z() const { return mDecayVertex.z();}
 inline float StHFTriplet::DcaToPrimaryVertex() const {return mDecayLength*sin(mPointingAngle);}
+inline float StHFTriplet::dV0Max() const {return mDV0Max;}
 #endif

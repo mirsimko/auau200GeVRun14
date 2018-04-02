@@ -188,6 +188,14 @@ class StPicoCutsBase : public TNamed
   void setCutProtonPtotRangeTOF(float min, float max);
   void setCutProtonPtotRangeHybridTOF(float min, float max);
 
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --   
+  // -- Some getters
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+
+  inline float getPtMin(int pidFlag) const;
+  inline float getPtMax(int pidFlag) const;
+  inline float getEtaMax(int pidFlag) const;
+
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
   // -- calculate beta of track -- basic calculation
@@ -361,5 +369,9 @@ inline bool StPicoCutsBase::isHybridTOFProton(StPicoTrack const *trk) const {
 inline bool StPicoCutsBase::isHybridTOFPion(StPicoTrack const *trk,   float const & tofBeta, StThreeVectorF const & vtx) const { return isHybridTOFHadron(trk, tofBeta, StPicoCutsBase::kPion, vtx); }
 inline bool StPicoCutsBase::isHybridTOFKaon(StPicoTrack const *trk,   float const & tofBeta, StThreeVectorF const & vtx) const { return isHybridTOFHadron(trk, tofBeta, StPicoCutsBase::kKaon, vtx); }
 inline bool StPicoCutsBase::isHybridTOFProton(StPicoTrack const *trk, float const & tofBeta, StThreeVectorF const & vtx) const { return isHybridTOFHadron(trk, tofBeta, StPicoCutsBase::kProton, vtx); }
+
+inline float StPicoCutsBase::getPtMax (int pidFlag) const { return mPtRange[pidFlag][1]; }
+inline float StPicoCutsBase::getPtMin (int pidFlag) const { return mPtRange[pidFlag][0]; }
+inline float StPicoCutsBase::getEtaMax(int pidFlag) const { return mEtaMax[pidFlag]; }
 
 #endif
