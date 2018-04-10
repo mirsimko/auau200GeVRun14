@@ -26,13 +26,11 @@
         tar -zcvf ${JOBID}.log.tgz ${JOBID}.log
     else
         root -q -b -l StRoot/macros/loadSharedHFLibraries.C StRoot/macros/&rootMacro;++\(\"$FILELIST\",\"&prodId;_$JOBINDEX\",&mMode;,\"picoList_badRuns.list\",\"&treeName;\",\"&productionBasePath;\",&decayChannel;\) # &gt;&amp; ${JOBID}.log
-        tar -zcvf ${JOBID}.log.tgz ${JOBID}.log
     endif
 
   </command>
 
   <output fromScratch="*.root"    toURL="$PRODPATH/" />
-  <output fromScratch="*.log.tgz" toURL="$LOGPATH/" />
   <output fromScratch="*.log" toURL="$LOGPATH/" />
   
   <SandBox installer="ZIP">
