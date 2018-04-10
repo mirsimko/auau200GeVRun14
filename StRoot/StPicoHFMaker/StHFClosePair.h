@@ -88,8 +88,8 @@ private:
 inline float StHFClosePair::particle1Dca() const { return mParticle1Dca; }
 inline float StHFClosePair::particle2Dca() const { return mParticle2Dca; }
 inline float StHFClosePair::dcaDaughters() const { return mDcaDaughters; }
-inline unsigned short StHFClosePair::particle1Idx() const { return mParticle1Dca; }
-inline unsigned short StHFClosePair::particle2Idx() const { return mParticle2Dca; }
+inline unsigned short StHFClosePair::particle1Idx() const { return mParticle1Idx; }
+inline unsigned short StHFClosePair::particle2Idx() const { return mParticle2Idx; }
 inline float StHFClosePair::p1massHypothesis() const { return mMassHypothesis1; }
 inline float StHFClosePair::p2massHypothesis() const { return mMassHypothesis2; }
 inline StThreeVectorF StHFClosePair::p1AtDcaToP2() const { return mP1AtDcaToP2; }
