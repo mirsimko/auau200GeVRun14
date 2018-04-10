@@ -117,6 +117,8 @@ void StHFTriplet::calculateTopology(StHFClosePair * closePair, StPhysicalHelixD 
   mParticle3Idx = p3Idx;
   mDcaDaughters12 = closePair->dcaDaughters();
 
+  // cout << mParticle1Idx << ", " << mParticle2Idx << ", " << mParticle3Idx << endl;
+
   p3Helix.moveOrigin(p3Helix.pathLength(vtx));
 
   StThreeVectorF const p3Mom = p3Helix.momentum(bField * kilogauss);
