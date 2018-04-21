@@ -121,6 +121,9 @@ void StHFTriplet::calculateTopology(StHFClosePair * closePair, StPhysicalHelixD 
 
   p3Helix.moveOrigin(p3Helix.pathLength(vtx));
 
+  // -- single part DCA for the 3rd particle
+  mParticle3Dca = (p3Helix.origin() - vtx).mag();
+
   StThreeVectorF const p3Mom = p3Helix.momentum(bField * kilogauss);
 
   StPhysicalHelixD * p1StraightLine = closePair->p1StraightLine();
